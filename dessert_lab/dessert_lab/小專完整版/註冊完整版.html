@@ -1,0 +1,753 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>註冊</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            height: 100%; /* 確保 body 占滿全螢幕 */
+            margin: 0; /* 移除預設邊距 */
+            
+        }
+        /* navbar   navbar   navbar   navbar   */
+        .navbar {
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: text-shadow 0.8s ease;
+            position: fixed;
+            width: 100%;
+            /* border: 1px solid red; */
+            top:0;
+            z-index: 1;
+            height: 60px;
+        }
+        .logo img{
+            width: 60px;
+            height: 60px;
+            margin-top: 5px;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            /* border: 1px solid peru; */
+        }
+        .navbar li {
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .navbar li a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {            
+            opacity: 0.7;                   
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            width: 100px;
+            transform: translateX(-20%) translateY(0%) ;
+        }
+        .arrow-icon {
+            position: absolute;          
+        }
+        .navbar li:hover .dropdown {
+            display: block;
+        }
+        .dropdown a {
+            color: rgb(48, 32, 32);
+            padding: 0px 14px 16px 14px;
+            text-decoration: none;
+            display: block;
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            /* border: 1px solid blue; */
+            width: 150px;
+                       
+        }
+        .icons .icon {
+            margin-left: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+        #cart-count {
+            position: absolute;
+            top: -8px;  /* 調整數字的垂直位置 */
+            right: -12px; /* 調整數字的水平位置 */
+            background-color: rgb(255, 0, 0); /* 設置背景色為紅色 */
+            color: white; /* 設置字體顏色為白色 */
+            border-radius: 50%; /* 使背景色圓形 */
+            padding: 2px 6px; /* 調整數字的內邊距 */
+            font-size: 10px; /* 調整數字的字體大小 */
+            display: none;
+        }
+        .icons .icon:hover {
+            opacity: 0.5;
+        }
+        .icon-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .icon-search img {
+            width: 25px;
+            padding-bottom: 5px;
+        }
+        .search-bar {
+            position: absolute;
+            top: 50%;
+            right: 10%; /* 初始位置 */
+            transform: translateY(-50%) translateX(-5%); /* 初始时在视口之外 */
+            padding: 10px;
+            opacity: 0; /* 初始透明 */
+            transition: transform 0.5s ease, opacity 0.5s ease; /* 平滑过渡 */
+        }
+
+        .icon-search:hover .search-bar {
+            transform: translateY(-50%) translateX(-20%); /* 滑动到视口中 */
+            opacity: 1; /* 使其可见 */
+        }
+
+        .search-bar.hide {
+            transform: translateY(-50%) translateX(-100%); /* 从视口中滑出到左边 */
+        }
+        .search-bar input {
+            border: none;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input {
+            width: 100px;
+        }
+        
+        .menu {
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .side-nav {
+            height: 100%;
+            width: 250px; /* 固定寬度 */
+            position: fixed;
+            top: 0;
+            left: -250px; /* 初始位置在視窗外 */
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 3;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .side-nav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #000000;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .side-nav a:hover {
+            color: #f1f1f1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .side-nav a.close-btn {
+            padding: 0;
+            margin: 0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .content {
+            padding: 20px;
+        }
+        @media (min-width: 650px) {
+            .menu {
+                display: none;       
+            }
+        }
+        @media (max-width: 650px) {
+            .navbar {
+               display: flex;
+               flex-direction: row;
+            }
+            .navbar ul {
+                display: none;
+            }
+            .icons {
+                margin-left: 80px;
+                margin-right: 10px;
+                justify-content: end;
+            }
+            .search-bar input {
+                display: none;
+            }
+            .menu {
+                margin-right: 10%;
+            }
+            .side-nav {
+                width: 150px;
+            }
+            .side-nav a {
+                font-size: 15px;
+                cursor: pointer;
+            }
+        }
+        /* 註冊   註冊   註冊   註冊   註冊   註冊   註冊   註冊   */
+        
+            body {
+                font-family: Arial, sans-serif;
+                height: 100%; /* 確保 body 占滿全螢幕 */
+                margin: 0; /* 移除預設邊距 */
+                position: relative;
+            }
+            .register {   
+                width: 300px;
+                height: auto;
+                /* border: 1px solid red;  */
+                margin: auto;
+                margin-top: 20vh;
+            }
+            .register p {
+                font-size: 25px;
+                font-weight: 800;
+            }
+            .registericon{
+                width: 30px;
+            }
+            .registeritem {
+                display: flex;
+                align-items: center;
+                border-bottom: 1px solid #000;
+            }
+            .registeritemicon {
+                width: 27px;
+            }
+            .input-container input {
+                width: 100%;
+                padding-right: 30px; /* 给眼睛图标留出空间 */
+                box-sizing: border-box;
+            }
+
+            .eye-icon {
+                position: absolute;
+                cursor: pointer;
+                font-size: 18px;
+                user-select: none; /* 防止文本选中 */
+                color: #666; /* 可以更改颜色以适应设计 */
+                /* background-color: aqua; */
+                margin-left: 50px;
+            }
+            input[type="submit"] {
+                background-color: #000000;
+                color: rgb(255, 255, 255);
+                padding: 10px 20px;
+                border: none;
+                cursor: pointer;
+                opacity: 0.8;
+            }
+
+            input[type="submit"]:hover {
+                background-color: #414141;
+            }
+
+            input[type="submit"]:active {
+                background-color: #878787;
+            }
+
+            input[type="text"], input[type="email"], input[type="tel"], 
+            input[type="number"], input[type="password"] {
+                width: 100%;
+                padding: 10px;
+                /* margin-bottom: 15px; */
+                border: none;
+                /* border-bottom: 2px solid #a3a3a3; */
+                box-sizing: border-box;
+                background-color: transparent;
+                outline: none;
+            }
+
+            input[type="text"]::placeholder, input[type="email"]::placeholder,
+            input[type="tel"]::placeholder, input[type="number"]::placeholder, 
+            input[type="password"]::placeholder {
+                color: #bbb;
+                font-size: 15px;
+            }
+
+
+            /* footer    footer    footer    footer    footer   */
+            html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        .footer {
+            display: flex;
+            width: 100%;
+            position: relative; 
+            background-color: #9c9c9c77;
+            /* top: 34%; */
+            bottom: -55px;
+            /* margin-bottom: -50px; */
+            height: 120px;
+        }
+        .section {
+            /* border:1px solid #000; */
+            display: flex;
+            flex: 1;
+            align-items: stretch;
+            /* background-color: aqua; */
+        }
+        .section ul {
+            display: flex;
+            list-style-type: none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin: auto;
+            padding: 0;
+        }
+        .section ul li {
+            /* border: 1px solid #000; */
+            flex: 1 1 50%;
+            text-align: center;
+            padding: 5px;
+            font-size:13px;            
+        }
+        .li-title {
+            font-size: 19px;
+            font-weight:bolder;
+        }
+        .section ul li a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .section ul li a:hover{
+            color: rgb(66, 66, 66);
+        }
+        .section ul li a img:hover {
+            opacity: 0.8;
+        }
+        .footer2 {
+            position: relative;
+            left: 0; 
+            background-color: rgb(94, 94, 94);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            align-items: center;
+            /* margin-bottom: 10px;  */
+            bottom: -35px;
+        }
+        
+        /*  */
+        .footer div:nth-of-type(4) ul li {
+            margin-top: 15px;
+        }
+        .footer div:nth-of-type(4) ul li img{
+            margin:0px 15px;
+        }
+        /*  */
+        .footer2 p {
+             margin: 10;
+
+             /* font-size: 20px; */
+        }
+        @media (max-width: 600px) {
+            body {
+                height: 110%;
+            }
+            .logindiv {
+                width: 280px;
+                /* height: 2000px; */
+                /* left: 40%; */
+                margin: auto -10vw;
+                /* margin-bottom: 100px; */
+                margin-top: -100px;
+            }
+            .eye-icon {
+                margin-left: 10px;
+            }
+            input[type="text"] ,[type="password"] ,[type="text"] {
+                font-size: 1rem;
+            }
+            input[type="text"]::placeholder,
+            input[type="password"]::placeholder {
+                font-size: 1rem;
+            }
+            .footer {
+                display:flex;
+                flex-wrap:wrap;
+                flex-direction: column;
+                width: 100%;
+                /* height: 40%;  */
+                /* margin-bottom: 10px; */
+                height: 250px;
+             }
+             .footer2 {
+                /* bottom: 0; */
+                position: relative;
+             }
+             .section {
+                display: flex;
+                width: 50%;
+                padding: none;
+             }             
+             .section ul {
+                display: flex;       
+                margin:5px;
+                /* margin-left:15px; */
+             }
+             .section ul li {
+                font-size: 15px;
+                margin: -2px;
+             }
+             :nth-of-type(4).section {
+                display: flex;
+                flex-direction: column;
+                height: 50%;
+             }
+             :nth-of-type(4).section ul li{
+                padding: -1px;               
+             }
+
+             .footer2 p{
+                font-size: 15px;
+                /* margin-bottom: 0px; */
+             }
+        }
+            /* 淡入CSS */
+            .fade-in {
+            opacity: 0; /* 初始透明 */
+            transition: opacity 0.5s ease-in-out; /* 淡入效果 */
+        }
+
+            .fade-in.visible {
+            opacity: 1; /* 淡入完成 */
+        }
+    </style>
+</head>
+<body>
+    <!-- navbar  navbar  navbar  navbar  navbar  -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="./首頁完整版.html">
+                <img src="./蛋糕照片/Cake Logo -.png" alt="">
+            </a>
+        </div>
+        <ul>
+            <li>
+                <!-- <a href="https://drive.google.com/drive/u/0/home">首頁</a> -->
+            </li>
+            <li>
+                <a href="#">商品列表</a>
+                &nbsp;<span class="arrow-icon">⌵</span>
+                <div class="dropdown">
+                    <br>
+                    <a href="./product_cream_cake.html">奶油蛋糕</a>
+                    <a href="#">小型蛋糕</a>
+                    <a href="#">糖果餅乾</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">線上訂購</a>
+            </li>
+            <li>
+                <a href="#">關於我們</a>
+            </li>
+            <li>
+                <a href="./常見問題完整版.html">常見問題</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <div class="icon-search">
+                <img src="./icon/search.png" width="25">
+                <div class="search-bar">
+                    <input type="text" placeholder="找商品">
+                </div>
+            </div>
+            <div class="icon">
+                <a href="./登入完整版.html">
+                    <img src="./icon/user.png" width="20">
+                </a>
+            </div>
+            <div class="icon">
+                <img src="./icon/message.png" width="20">
+            </div>
+            <div class="icon">
+                <img src="./icon/shopping-cart-black-shape.png" width="25" alt="購物車">
+                <span id="cart-count">0</span> <!-- 顯示購物車數量的元素 -->
+            </div>           
+        </div>
+        <img class="menu" id="Menu" src="./icon/menu.png" width="25">
+    </nav>
+    <div class="side-nav" id="sideNav">
+        <a href="javascript:void(0)" class="close-btn" id="closeBtn">&times;</a>
+        <a href="./奶油蛋糕.html">奶油蛋糕</a>
+        <a href="#">小型蛋糕</a>
+        <a href="#">糖果餅乾</a> 
+        <a href="#">線上訂購</a>
+        <a href="#">關於我們</a>
+        <a href="./常見問題完整版.html">常見問題</a> 
+        <div class="overlay" id="overlay"></div>
+    </div>
+    <!-- 註冊   註冊   註冊   註冊   註冊   註冊   註冊   註冊   註冊   -->
+    <div class="register">
+        <p>註冊&nbsp;&nbsp;<img class="registericon"  src="./icon/edit.png" alt=""></p>
+        <br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/person_.png" alt="">
+            <input type="text" placeholder="請輸入您的姓名" id="name">   
+        </div>
+        <br><br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/mail_.png" alt="">
+            <input type="email" placeholder="請輸入您的E-mail" id="mail">  
+        </div>  
+        <br><br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/call_phone.png" alt="">
+            <input type="tel" placeholder="請輸入您的電話" id="phone">  
+        </div>  
+        <br><br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/calendar_month_.png" alt="">
+            <input type="number" placeholder="請輸入您的生日 (YYYYMMDD)" id="birth" maxlength="8">    
+        </div>
+        <br><br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/key_.png" alt="">
+            <div class="input-container">
+                <input type="password" placeholder="請輸入您的密碼" id="password">
+                <i id="toggle-password" class="eye-icon">
+                    <img src="./icon/closeeye.png" alt="" id="eye-icon-password">
+                </i>
+            </div>
+        </div>  
+        <br><br>
+        <div class="registeritem">
+            <img class="registeritemicon" src="./icon/key_.png" alt="">
+            <div class="input-container">
+                <input type="password" placeholder="請再輸入一次密碼" id="password-confirm">
+                <i id="toggle-password-confirm" class="eye-icon">
+                    <img src="./icon/closeeye.png" alt="" id="eye-icon-password-confirm">
+                </i>
+            </div>
+        </div>
+        
+        
+        <br><br>
+        <input type="checkbox" id="agree-checkbox">
+        <label for="agree-checkbox" style="color:#000000 ;">我已經閱讀並同意條款</label>
+        <a href="#" style="color:#000000 ;">隱私權聲明</a>
+        <br><br><br>
+        <form id="registration-form" action="/submit-url" method="post">
+            <input type="submit" value="註冊會員">
+        </form>
+    </div>
+    <!-- /* footer    footer    footer    footer    footer   */ -->
+    <footer class="footer">
+        <div class="section">
+            <ul>
+                <li class="li-title">關於我們</li>
+                <li><a href="#">媒體報導</a></li>
+                <li><a href="#">工作機會</a></li>
+                <li><a href="#">合作夥伴</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>
+                <li class="li-title">客戶服務</li>
+                <li><a href="#">購物須知</a></li>
+                <li><a href="#">使用條款</a></li>
+                <li><a href="#">隱私政策</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>
+                <li class="li-title">LOGO</li>
+                <li>
+                    <img src="./icon/地圖.svg" width="15px">
+                    &nbsp;台中市西屯區123號
+                </li>
+                <li>
+                    <img src="./icon/phone.svg" width="15px">
+                    &nbsp;04-1234567
+                </li>
+                <li>
+                    <img src="./icon/clock.svg" width="15px">
+                    &nbsp;08:00 - 21:00
+                </li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>
+                <li>
+                    <a href="https://www.facebook.com/?locale=zh_TW">
+                      <img src="./icon/facebook.png" style="width: 25px;" class="pic">
+                    </a>
+                    <a href="https://access.line.me/oauth2/v2.1/login?returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fscope%3Dopenid%2Bprofile%2Bfriends%2Bgroups%2Btimeline.post%2Bmessage.write%26response_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Fsocial-plugins.line.me%252Fwidget%252FloginCallback%253FreturnUrl%253Dhttps%25253A%25252F%25252Fsocial-plugins.line.me%25252Fwidget%25252Fclose%26state%3D9fec98665820574ebc349f47d089a6%26client_id%3D1446101138&loginChannelId=1446101138#/">
+                      <img src="./icon/line.png" style="width: 25px;">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/accounts/login/?next=%2Fcr8on%2Ffeed%2F&source=profile_feed_tab&locale=zh_tw">
+                      <img src="./icon/instagram.png" style="width: 25px;">
+                    </a>
+                    <a href="mailto:123@gmail.com" >
+                      <img src="./icon/email.png" style="width: 25px; height: 25px;">
+                    </a>
+                </li>  
+            </ul>
+        </div>
+    </footer>
+    <br>
+    <footer class="footer2">
+        <p>&copy; 2024 © DESSERT LAB Inc.</p>
+    </footer>
+    <script>
+    // 漢堡菜單
+    document.getElementById("Menu").onclick = function() {
+            document.getElementById("sideNav").style.left = "0";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        document.getElementById("closeBtn").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        document.getElementById("overlay").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+
+
+         // 註冊效果   註冊效果   註冊效果   註冊效果   註冊效果   
+         document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('registration-form');
+    var submitBtn = form.querySelector('input[type="submit"]');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止表單提交
+
+        // 更改提交按鈕文字為「註冊中...」
+        submitBtn.value = '註冊中...';
+
+        // 模擬提交的延遲效果（這裡可以替換為實際的表單提交代碼）
+        setTimeout(function() {
+            alert('註冊成功，即將導至首頁'); // 示範用的提示框
+            submitBtn.value = '註冊會員'; // 恢復提交按鈕的文字
+            
+            // 導向至首頁
+            window.location.href = './首頁完整版.html'; // 將網址替換為你的首頁網址
+        }, 2000); // 模擬2秒的延遲效果
+    });
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+    // 函数用于切换密码可见性
+    function togglePasswordVisibility(passwordInputId, toggleIconId, eyeIconId) {
+        var passwordInput = document.getElementById(passwordInputId);
+        var toggleIcon = document.getElementById(toggleIconId);
+        var eyeIcon = document.getElementById(eyeIconId);
+
+        toggleIcon.addEventListener('click', function() {
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                eyeIcon.src = './icon/open eye.png'; // 更改图标为关闭眼睛的图标
+            } else {
+                passwordInput.type = 'password';
+                eyeIcon.src = './icon/closeeye.png'; // 更改图标为打开眼睛的图标
+            }
+        });
+    }
+
+    // 调用函数处理两个密码输入框
+    togglePasswordVisibility('password', 'toggle-password', 'eye-icon-password');
+    togglePasswordVisibility('password-confirm', 'toggle-password-confirm', 'eye-icon-password-confirm');
+});
+
+
+
+
+
+        // 購物車數字效果
+        let cartCount = 0;
+
+        document.getElementById('add-to-cart-button').addEventListener('click', () => {
+            cartCount += 1;
+            const cartCountElement = document.getElementById('cart-count');
+            cartCountElement.innerText = cartCount;
+            cartCountElement.style.display = cartCount > 0 ? 'block' : 'none'; // 显示数字
+        });
+        // 淡入效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 当元素已经出现时，停止观察
+                    }
+                });
+            }, {
+                threshold: 0.1 // 元素至少有 10% 出现在视口内时触发
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+    </script>
+</body>
+</html>

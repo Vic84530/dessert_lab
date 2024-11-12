@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .card {
+            display: inline-block;
+            position: relative;
+            width: 200px;
+            margin:0 20px 50px;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            transition: transform 0.9s ease, box-shadow 0.9s ease;
+            text-align: center;
+            background-color: rgb(202, 192, 192);
+            cursor: pointer;
+        }
+        .card a {
+            text-decoration: none;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-title {
+            font-size: 1em;
+            margin: 15px;
+            padding-bottom: 10%;
+            color: rgb(0, 0, 0);
+            font-weight: lighter;
+            word-wrap: break-word;    
+        }
+        .card p {
+            position: absolute;
+            bottom: 0;
+            right: 15px;
+            margin: 10px;
+            font-weight: lighter;
+            font-size: 90%;
+            color: #000;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+      
+        .card p span {
+            display: inline-block;
+            font-size: 20px;
+            transition: transform 0.3s ease-out;
+        }
+        .card:hover p span {
+            transform: translateX(20px);
+        }
+    </style>
+</head>
+<body>
+<div class="div1">
+    <div class="card">
+        <a href="https://www.w3schools.com/">
+        <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">
+        <div>
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+        </div>
+    </div>
+    <div class="card">
+        <a href="https://www.w3schools.com/">
+        <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">
+        <div>
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+        </div>
+    </div>
+    <div class="card">
+        <a href="https://www.w3schools.com/">
+        <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">
+        <div>
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+        </div>
+    </div>
+    <div class="card">
+        <a href="https://www.w3schools.com/">
+        <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">
+        <div>
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+        </div>
+    </div>
+</div>
+    
+</body>
+</html>

@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>購物車</title>
+    <style>
+        .icon {
+            position: relative;
+            display: inline-block;
+        }
+        .icon img {
+            width: 25px;
+        }
+        #cart-count {
+            position: absolute;
+            top: -5px;  /* 調整數字的垂直位置 */
+            right: -10px; /* 調整數字的水平位置 */
+            background-color: red; /* 設置背景色為紅色 */
+            color: white; /* 設置字體顏色為白色 */
+            border-radius: 50%; /* 使背景色圓形 */
+            padding: 2px 6px; /* 調整數字的內邊距 */
+            font-size: 14px; /* 調整數字的字體大小 */
+            font-weight: bold; /* 設置數字為粗體 */
+        }
+    </style>
+</head>
+<body>
+    <div class="icon">
+        <img src="./shopping-cart-black-shape.png" alt="購物車">
+        <span id="cart-count">0</span> <!-- 顯示購物車數量的元素 -->
+    </div>
+    <button class="add-to-cart-button" id="add-to-cart-button">加入購物車</button>
+
+    <script>
+        let cartCount = 0;
+
+        document.getElementById('add-to-cart-button').addEventListener('click', () => {
+            cartCount += 1;
+            document.getElementById('cart-count').innerText = cartCount;
+        });
+    </script>
+</body>
+</html>
+

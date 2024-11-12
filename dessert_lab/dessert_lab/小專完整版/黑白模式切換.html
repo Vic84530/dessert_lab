@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body{
+            background-color: white;
+        }
+        .buttom1{
+            width: 40px;
+            height: 20px;
+            margin: auto;
+            border: 2px solid black;
+            border-radius: 20px;
+            background-color: rgb(114, 114, 114);
+        }
+        .buttom2{
+            width: 18px;
+            height: 15px;
+            background-color: rgb(255, 255, 255);
+            border: 1px solid black;
+            border-radius: 30px;
+            margin-top: 1px;
+            margin-left: 2px;
+            cursor: pointer;
+            transform: translateX(0px);
+            transition: transform 0.3s;
+        }
+        /* .buttom2:active{
+            transform: translateX(20px);
+        } */
+        .change-buttom{
+            border: 1px solid black;
+            width: 100px;
+            cursor: pointer;
+        }
+        .moon{
+
+        }
+        .sun {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <button onclick="changecolor()">改變背景</button>
+    <div class="buttom1">
+        <div class="buttom2" onclick="move()"></div>
+    </div>
+
+    <div class="change-buttom" onclick="change()">
+        <img class="moon" src="./img/dark_mode.png" alt="">
+        <img class="sun" src="./img/light_mode.png" alt="">
+    </div>
+</body>
+    <script>
+
+        function change(){
+            var color = true;
+            var pic = document.querySelector(".moon");
+
+        }
+
+        // 改變背景按鈕1   改變背景按鈕   改變背景按鈕   改變背景按鈕   改變背景按鈕   改變背景按鈕   
+        // function changecolor(){
+        //     document.body.style.backgroundColor = "black";
+        // }
+        // function changecolor(){
+        //         if (color) {
+        //                 document.body.style.backgroundColor = "white";
+        //                 color=false;
+        //             } else {
+        //                     document.body.style.backgroundColor = "black";
+        //                     color = true;
+        //                 }
+        //             }
+                    
+
+        // 改變背景按鈕2   改變背景按鈕2   改變背景按鈕2   改變背景按鈕2   改變背景按鈕2   改變背景按鈕2  
+        var color = true;
+        var bmove = false;
+
+        function move(){
+            var element = document.querySelector(".buttom2");
+            if (bmove==false) {
+                element.style.transform = "translateX(15px)";
+                document.body.style.backgroundColor = "black";
+                // document.buttom2.style.bordercolor = "white";
+                bmove = true;
+                color=false;
+            } else {
+                element.style.transform = "translateX(0px)";
+                document.body.style.backgroundColor = "white";
+                bmove = false;
+                color = true;
+            }
+            
+        }
+    </script>
+</html>

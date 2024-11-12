@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+        /* navbar   navbar   navbar   navbar   */
+        .navbar {
+            background-color: rgb(255, 255, 255);
+            display:flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: text-shadow 0.8s ease;
+            position: fixed;
+            width: 100%;
+            border: 1px solid red;
+            margin-top:-60px;
+            z-index: 1;
+            opacity: 0.93;
+            height: 5%;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(16, 17, 18);
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            border: 1px solid peru;
+        }
+        .navbar li {
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .navbar li a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {            
+            opacity: 0.7;                   
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            width: 100px;
+            transform: translateX(-20%) translateY(0%) ;
+        }
+        .arrow-icon{
+            position: absolute;          
+        }
+        .navbar li:hover .dropdown {
+            display: block;
+        }
+        .dropdown a {
+            color: rgb(48, 32, 32);
+            padding:0px 14px 16px 14px;
+            text-decoration: none;
+            display: block;
+            
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            border: 1px solid blue;
+            width: 150px;           
+        }
+        .icons .icon {
+            margin-left: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            
+        }
+        .icons .icon:hover {
+            opacity: 0.5;
+
+        }
+        .icon-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .icon-search img {
+            width: 25px;
+            padding-bottom: 5px;
+        }
+        .search-bar {
+            display: none;
+            position:absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%) translatex(10%);
+            padding: 10px;
+            transition:all 0.5s ease;            
+        }
+        .icon-search:hover .search-bar {
+            display: flex;
+            right: calc(100% + 10px);
+        }
+        .search-bar input {
+            border: none ;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input{
+            width: 100px;
+        }
+        
+        .menu {
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .side-nav {
+            height: 100%;
+            width: 250px; /* 固定寬度 */
+            position: fixed;
+            top: 0;
+            left: -250px; /* 初始位置在視窗外 */
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 3;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .side-nav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #000000;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .side-nav a:hover {
+            color: #f1f1f1;
+            
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .side-nav a.close-btn {
+            padding: 0;
+            margin: 0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            z-index: 2;
+        }
+
+        .content {
+            padding: 20px;
+        }
+        @media (min-width:650px) {
+            .menu {
+                display: none;       
+            }
+        }
+        @media (max-width:650px) {
+            .navbar {
+               display: flex;
+               flex-direction: row;
+            }
+            .navbar ul {
+                display: none;
+            }
+            .icons {
+                margin-left: 80px;
+                margin-right: 10px;
+                justify-content:end;
+            }
+            .search-bar input{
+                display: none;
+            }
+            .menu {
+                margin-right: 10%;
+            }
+            .side-nav {
+                width: 150px;
+            }
+            .side-nav a {
+                font-size: 15px;
+                cursor: pointer;
+            }
+        }
+        /* 功能  功能  功能  功能  功能  功能  功能  */
+
+        .container {
+            border: 1px solid #004e00;
+            width: 80%;
+            height: 600px; /* Increased height to accommodate the thumbnails */
+            margin: 60px auto;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .cake {
+            border: 1px solid #d0d000;
+            width: 40%;
+            height: 90%;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+          
+        }
+        .select {
+            border: 1px solid #d0d000;
+            width: 40%;
+            height: 90%;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .cake img {
+            max-width: 100%;
+            height: 100%;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Added margin-top for spacing */
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: auto;
+            margin: 0 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .select p {
+            margin: 0 0 10px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .dropdown2 {
+            width: 100%;
+            text-align: center;
+        }
+
+        .dropdown2 p {
+            margin: 10px 0;
+            font-size: 20px;
+        }
+
+        .dropdown2 select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            /* border-radius: 4px; */
+            font-size: 16px;
+        }
+
+        .dropdown2 input[type="number"] {
+            width: 30%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            /* border-radius: 4px; */
+            font-size: 16px;
+        }
+
+        .cakesize {
+            margin: auto;
+            padding: 30px;
+        }
+        .cakemany {
+            padding-bottom: 30px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 4px;
+            text-wrap: nowrap;
+        }
+
+        .actions :nth-of-type(1) {
+            background-color: #ff0000;
+        }
+
+        .actions :nth-of-type(1):hover {
+            background-color: #ff0000c9;
+        }
+
+        .actions :nth-of-type(2) {
+            background-color: #0051ff;
+        }
+
+        .actions :nth-of-type(2):hover {
+            background-color: #0022ffc0;
+        }
+
+        .product-information {
+            width: 60%;
+            margin: 20px auto;
+            border: 2px solid #ff0000;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-information p {
+            text-align: center;
+            font-size: 24px;
+            margin: 20px 0;
+        }
+
+        .product-information img {
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+        @media (max-width:900px){
+            .container {
+                display:flex;
+                flex-direction: column;
+            }           
+            .cake {
+                width: 90%;
+                margin-top: 120%;
+                
+            }
+            .select {
+                height: 110%;
+                width: 90%;
+                margin-top: 10%;
+            }
+            .product-information {
+                margin-top: 100%;
+                width: 90%;
+            }
+
+        }
+        @media (max-width:400px){
+            .cake {
+                width: 100%;
+                margin-top: 170%;
+                
+            }
+            .select {
+                height: 110%;
+                width: 100%;
+                margin-top: 10%;
+            }
+            .dropdown2 select {
+                width: 80%;
+            }
+            .product-information {
+                margin-top: 130%;
+                width: 90%;
+            }
+
+        }
+    </style>
+</head>
+<body>
+    <!-- navbar  navbar  navbar  navbar  navbar  -->
+    <nav class="navbar">
+        <div class="logo">LOGO</div>
+        <ul>
+            <li>
+                <!-- <a href="https://drive.google.com/drive/u/0/home">首頁</a> -->
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">商品列表</a>
+                &nbsp;<span class="arrow-icon">⌵</span>
+                <div class="dropdown">
+                    <br>
+                    <a href="#">人氣商品</a>
+                    <a href="#">奶油蛋糕</a>
+                    <a href="#">酥脆塔類</a>
+                    <a href="#">手工小物</a>
+                </div>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">線上訂購</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">關於我們</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">常見問題</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <div class="icon-search">
+                <img src="./search.png" width="25">
+                <div class="search-bar">
+                    <input type="text" placeholder="找商品">
+                </div>
+            </div>
+            <div class="icon">
+                <a href="./登入.html">
+                    <img src="./user.png" width="20">
+                </a>
+            </div>
+            <div class="icon">
+                <img src="./message.png" width="20">
+            </div>
+            <div class="icon">
+                <img src="./shopping-cart-black-shape.png" width="25">
+            </div>            
+        </div>
+        <img class="menu" id="Menu" src="./菜單.jpg" width="50">
+    </nav>
+    <div class="side-nav" id="sideNav">
+        <a href="javascript:void(0)" class="close-btn" id="closeBtn">&times;</a>
+        <a href="#">人氣商品</a>
+        <a href="#">奶油蛋糕</a>
+        <a href="#">酥脆塔類</a>
+        <a href="#">手工小物</a>  
+        <div class="overlay" id="overlay"></div>
+    </div>
+    <!-- 功能   功能   功能   功能   功能   功能   功能   -->
+    <div class="container">
+        <div class="cake">
+            <div class="main-photo" id="main-photo">
+                <img src="./小專照片/嚴選材料icon/嚴材icon2.jpg" alt="Main Photo" id="main-image">
+            </div>
+            <div class="thumbnail-gallery">
+                <img src="./小專照片/嚴選材料icon/嚴材icon5.jpg" alt="Thumbnail 1" class="thumbnail" onclick="changeMainPhoto('./小專照片/嚴選材料icon/嚴材icon5.jpg')">
+                <img src="./小專照片/嚴選材料icon/嚴材icon6.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeMainPhoto('./小專照片/嚴選材料icon/嚴材icon6.jpg')">
+            </div>            
+        </div>
+        <div class="select">
+            <p>蒙布朗蛋糕 6吋<br>NT$ 650</p>
+            <div class="dropdown2">
+                <div class="cakesize">
+                    <p>蛋糕尺寸</p>
+                    <select>
+                        <option>6吋 NT$ 650</option>
+                        <option>8吋 NT$ 1000</option>
+                        <option>18吋 NT$ 1500</option>
+                    </select>
+                </div>
+                <div class="cakemany">
+                    <p>數量</p>
+                    <input type="number" min="1" value="1">
+                </div>
+                <div class="actions">
+                    <button>立即購買</button>
+                    <button>加入購物車</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="product-information">
+        <p>｜商品介紹｜</p>
+        <img src="./小專照片/商品介紹/商品介紹.png" alt="Product Introduction">
+        <p>｜食用建議｜</p>
+        <img src="./小專照片/商品介紹/食用說明高清.png" alt="Eating Instructions">
+        <img src="./小專照片/商品介紹/營養標示高清.png" alt="Nutritional Information">
+    </div>
+    <script>
+        function changeMainPhoto(src) {
+            document.getElementById('main-image').src = src;
+        }
+    </script>
+</body>
+</html>

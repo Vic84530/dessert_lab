@@ -1,0 +1,1016 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小型蛋糕</title>
+    <style>
+    /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: scale(0.9);
+            z-index: 1;
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-to-top:hover {
+            background-color: #0056b3;
+        }
+        /* 對話框   對話框   對話框   對話框   對話框   對話框   對話框   對話框
+           對話框   對話框   對話框    */
+        .overlay {
+            display: none; /* Initially hide the overlay */
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5); /* Gray background with 0.5 opacity */
+            z-index: 1000; /* Ensure overlay is above other content */
+        }
+        .dialog {
+            display: none; /* Initially hide the dialog */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 500px;
+            height: 300px; /* Fixed height for the dialog */
+            background-color: #ffffff;
+            /* border: 1px solid #ddd; */
+            /* border-radius: 8px; */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            box-sizing: border-box;
+            z-index: 1001;
+        }
+        .dialog-header {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .dialog-content {
+            margin-bottom: 40px; /* Space for the buttons at the bottom */
+        }
+        .dialog-input,.dialog-textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .dialog-textarea {
+            height: 100px; /* Fixed height for the textarea */
+            resize: none; /* Disable resizing */
+        }
+        .dialog-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute; /* Absolute positioning for the buttons */
+            bottom: 10px;
+        }
+        .dialog-button.close {
+            background-color: #6c757d;
+            right: 90px; /* Position close button to the left */
+        }
+        .dialog-button.send {
+            right: 20px; /* Position send button to the right */
+        }
+        /* navbar    navbar    navbar    navbar    navbar    navbar   */
+        body,html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .navbar {
+            background-color: rgb(255, 255, 255);
+            display:flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            transition: text-shadow 0.8s ease;
+            position: fixed;
+            width: 100%;
+            /* border: 1px solid red; */
+            top:0;
+            z-index: 1;
+            height: 60px;
+        }
+        .logo img{
+            width: 60px;
+            height: 60px;
+            margin-top: 5px;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            /* border: 1px solid peru; */
+            
+        }
+        .navbar li {
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .navbar li a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {            
+            opacity: 0.7;                   
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            width: 100px;
+            transform: translateX(-20%) translateY(0%) ;
+        }
+        .arrow-icon{
+            position: absolute;          
+        }
+        .navbar li:hover .dropdown {
+            display: block;
+        }
+        .dropdown a {
+            color: rgb(48, 32, 32);
+            padding:0px 14px 16px 14px;
+            text-decoration: none;
+            display: block;
+            
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            /* border: 1px solid blue; */
+            width: 150px;           
+        }
+        .icons .icon {
+            margin-left: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            
+        }
+        .icons .icon:hover {
+            opacity: 0.5;
+
+        }
+        .icon-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .icon-search img {
+            width: 25px;
+            padding-bottom: 5px;
+        }
+        .search-bar {
+            position: absolute;
+            top: 50%;
+            right: 10%; /* 初始位置 */
+            transform: translateY(-50%) translateX(-5%); /* 初始时在视口之外 */
+            padding: 10px;
+            opacity: 0; /* 初始透明 */
+            transition: transform 0.5s ease, opacity 0.5s ease; /* 平滑过渡 */
+        }
+
+        .icon-search:hover .search-bar {
+            transform: translateY(-50%) translateX(-20%); /* 滑动到视口中 */
+            opacity: 1; /* 使其可见 */
+        }
+
+        .search-bar.hide {
+            transform: translateY(-50%) translateX(-100%); /* 从视口中滑出到左边 */
+        }
+        .search-bar input {
+            border: none ;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input{
+            width: 100px;
+        }
+        
+        .menu {
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .side-nav {
+            height: 100%;
+            width: 250px; /* 固定寬度 */
+            position: fixed;
+            top: 0;
+            left: -250px; /* 初始位置在視窗外 */
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 3;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .side-nav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #000000;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .side-nav a:hover {
+            color: #f1f1f1;
+            
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .side-nav a.close-btn {
+            padding: 0;
+            margin: 0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            
+            z-index: 2;
+        }
+
+        .content {
+            padding: 20px;
+        }
+        @media (min-width:650px) {
+            .menu {
+                display: none;       
+            }
+        }
+        @media (max-width:650px) {
+            .navbar {
+               display: flex;
+               flex-direction: row;
+            }
+            .navbar ul {
+                display: none;
+            }
+            .icons {
+                margin-left: 80px;
+                margin-right: 10px;
+                justify-content:end;
+            }
+            .search-bar input{
+                display: none;
+            }
+            .menu {
+                margin-right: 10%;
+            }
+            .side-nav {
+                width: 150px;
+            }
+            .side-nav a {
+                font-size: 15px;
+                cursor: pointer;
+            }
+        }
+    
+    /* sec2 - card */
+        .caketitle {
+            display: flex;
+            justify-content: center;
+        }
+        .caketitle p {
+            font-size: 20px;
+            font-weight: 800;
+        }
+        #cardcontainer {
+            display: flex;
+            width: 100%;
+            /* border: 1px solid #000; */
+            /* background-color: #bd4747; */
+            box-sizing: border-box;
+            justify-content: center;
+            padding-top: 5;
+        }
+         .card {
+        display: inline-block;
+        position: relative;
+        width: 280px;
+        margin:0 20px 50px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.9s ease, box-shadow 0.9s ease;
+        text-align: center;
+        background-color: rgb(255, 255, 255,0.5);
+        cursor: pointer;
+        flex: none;
+        }
+        .card a {
+            text-decoration: none;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-title {
+            font-size: 13;
+            margin: 15px;
+            padding-bottom: 10%;
+            color: rgb(0, 0, 0);
+            font-weight:800;
+            word-wrap: break-word;    
+        }
+        .card p {
+            position: absolute;
+            bottom: 0;
+            right: 15px;
+            margin: 10px;
+            font-weight: lighter;
+            font-size: 90%;
+            color: #000;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+        .card p span {
+            display: inline-block;
+            font-size: 20px;
+            transition: transform 0.3s ease-out;
+            
+        }
+        .card:hover p span {
+            transform: translateX(20px);
+        }
+        @media (min-width:1240px){
+            .caketitle{
+                margin-top: 100px;
+            }
+        }
+        @media (max-width:1240px){
+            #cardcontainer {
+                flex-wrap: wrap;
+            }
+            .card {
+                width:20%;
+            }
+            .carousel-image {
+                height: 80%;
+            }
+        }
+        @media (max-width:900px){
+            #cardcontainer {
+                flex-wrap: wrap;
+            }
+            .card {
+                width:40%;
+            }
+        }
+        @media (max-width:600px){    
+            .card {
+                width:40%;
+            }
+            
+        }
+        @media (max-width:400px){
+            .card {
+                margin: 10px;
+            }
+            .card-title {
+                font-size: 10px;
+                font-weight: 800;
+            }
+            .card p span {
+                font-size: 17px;
+            }
+            .card p {
+                font-size: 12px;
+            }
+        }
+        @media (max-width:375px){
+            .card {
+                width: 35%;
+                margin: 10px 20px 10px;
+            }
+        }
+
+       
+        /*  footer  footer  footer  footer  footer */
+        html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .footer {
+            display: flex;
+            /* border: 5px solid #ff00a6; */
+            margin-bottom: -1.2rem;
+            width: 100%;
+            justify-content: space-around;
+            bottom: 50px;
+            background-color: #9c9c9c77;
+            /* box-shadow: 0 2px 4px rgba(0,0,0,0.5); */
+            /* margin-bottom: -19px; */
+            height: 120px;
+        }
+        .section {
+            /* border:1px solid #000; */
+            display: flex;
+            flex: 1;
+            align-items: stretch;
+            /* background-color: aqua; */
+        }
+        .section ul {
+            display: flex;
+            list-style-type: none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin: auto;
+            padding: 0;
+        }
+        .section ul li {
+            /* border: 1px solid #000; */
+            flex: 1 1 50%;
+            text-align: center;
+            padding: 5px;
+            font-size:13px;            
+        }
+        .li-title {
+            font-size: 19px;
+            font-weight:bolder;
+        }
+        .section ul li a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-weight: 800;
+        }
+        .section ul li a:hover{
+            color: rgb(66, 66, 66);
+        }
+        .section ul li a img:hover {
+            opacity: 0.8;
+        }
+        .footer2 {
+            bottom: 0;
+            background-color: rgb(94, 94, 94);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            height: 40px;
+            justify-content: center;
+            align-items: center;
+            /* border-top: 1px solid black; */
+            /* box-sizing:border-box; */
+        }
+        /*  */
+        .footer div:nth-of-type(4) ul li {
+            margin-top: 15px;
+        }
+        .footer div:nth-of-type(4) ul li img{
+            margin:0px 15px;
+        }
+        /*  */
+        .footer2 p {
+             margin: 0;
+             color: #000000;
+             font-size: 15px;
+        }
+        @media (max-width: 600px) {
+            .footer {
+                display:flex;
+                flex-wrap:wrap;
+                flex-direction: column;
+                width: 100%;
+                height: 250px;
+             }
+             .section {
+                display: flex;
+                width: 50%;
+                padding: none;
+             }             
+             .section ul {
+                display: flex;       
+                margin:5px;
+                /* margin-left:15px; */
+             }
+             .section ul li {
+                font-size: 13px;
+                margin: -2px;
+                font-weight: 500;
+             }
+             :nth-of-type(4).section {
+                display: flex;
+                flex-direction: column;
+                height: 50%;
+             }
+             :nth-of-type(4).section ul li{
+                padding: -1px;               
+             }
+             .footer2 p{
+                margin: 0;
+                color: #000000;
+                font-size: 15px;
+             }
+        }
+        @media (max-width: 400px) {
+            .footer {
+                display:flex;
+                flex-wrap:wrap;
+                flex-direction: column;
+                width: 100%;
+                height: 250px;
+             }
+        }
+                /* 淡入CSS */
+            .fade-in {
+            opacity: 0; /* 初始透明 */
+            transition: opacity 1s ease-in-out; /* 淡入效果 */
+        }
+
+            .fade-in.visible {
+            opacity: 1; /* 淡入完成 */
+        }
+    </style>
+</head>
+<body>
+    <!-- /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    * -->
+    <button id="scrollToTopBtn" class="scroll-to-top">Top</button>
+
+    <!-- navbar  navbar  navbar  navbar  navbar  -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="./首頁完整版.html">
+                <img src="./蛋糕照片/Cake Logo -.png" alt="">
+            </a>
+        </div>
+        <ul>
+            <li>
+                <!-- <a href="https://drive.google.com/drive/u/0/home">首頁</a> -->
+            </li>
+            <li>
+                <a href="#">商品列表</a>
+                &nbsp;<span class="arrow-icon">⌵</span>
+                <div class="dropdown">
+                    <br>
+                    <a href="./product_cream_cake.html">奶油蛋糕</a>
+                    <a href="#">小型蛋糕</a>
+                    <a href="#">糖果餅乾</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">線上訂購</a>
+            </li>
+            <li>
+                <a href="#">關於我們</a>
+            </li>
+            <li>
+                <a href="./常見問題完整版.html">常見問題</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <div class="icon-search">
+                <img src="./icon/search.png" width="25">
+                <div class="search-bar">
+                    <input type="text" placeholder="找商品">
+                </div>
+            </div>
+            <div class="icon">
+                <a href="./登入完整版.html">
+                    <img src="./icon/user.png" width="20">
+                </a>
+            </div>
+            <div class="icon" onclick="openDialog()">
+                <img src="./icon/message.png" width="20">
+            </div>
+            <!-- 遮罩層 -->
+            <div class="overlay" id="overlay" onclick="closeDialog()"></div>
+                <!-- 對話框   對話框   對話框   對話框   對話框   對話框   對話框   -->
+             <div class="dialog" id="dialog">
+                <div class="dialog-header">留言</div>
+                <div class="dialog-content">
+                    <input type="email" id="email" class="dialog-input" placeholder="請輸入您的EMAIL">
+                    <textarea id="message" class="dialog-textarea" placeholder="請輸入您的留言"></textarea>
+                    <!-- Buttons positioned within the dialog -->
+                    <button class="dialog-button close" onclick="closeDialog()">關閉</button>
+                    <button class="dialog-button send" onclick="sendMessage()">發送</button>
+                </div>
+            </div>
+            <div class="icon">
+                <img src="./icon/shopping-cart-black-shape.png" width="25">
+            </div>            
+        </div>
+        <img class="menu" id="Menu" src="./icon/menu.png" width="25">
+    </nav>
+    <div class="side-nav" id="sideNav">
+        <a href="javascript:void(0)" class="close-btn" id="closeBtn">&times;</a>
+        <a href="#">奶油蛋糕</a>
+        <a href="#">小型蛋糕</a>
+        <a href="#">糖果餅乾</a>  
+        <a href="#">線上訂購</a>
+        <a href="#">關於我們</a>
+        <a href="./常見問題完整版.html">常見問題</a>
+        <div class="overlay" id="overlay"></div>
+    </div>
+     <!-- sec2-card ----sec2-card ----sec2-card -->
+      <!-- 鮮奶油蛋糕  鮮奶油蛋糕  鮮奶油蛋糕  鮮奶油蛋糕  鮮奶油蛋糕  -->
+<!--        
+    <div class="caketitle fade-in" >
+        <p>鮮奶油蛋糕 | Cream Cake</p>
+    </div>
+<div class="fade-in"  id="cardcontainer">
+    <div class="card" >
+         <a href="./商品介紹完整版.html">
+            <img src="./蛋糕照片/蒙布朗.jpg" alt="card img">  
+                 <h3 class="card-title">蒙布朗蛋糕 6吋</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+        <a href="#">
+           <img src="./蛋糕照片/獨角獸.jpg" alt="card img">  
+                <h3 class="card-title">獨角獸蛋糕 6吋</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div>
+   <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/花型蛋糕.jpg" alt="card img">  
+            <h3 class="card-title">花型蛋糕 6吋</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+    <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/提拉米蘇.jpg" alt="card img">  
+            <h3 class="card-title">提拉米蘇蛋糕 6吋</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+</div>
+<div class="fade-in"  id="cardcontainer">
+    <div class="card" >
+         <a href="./商品介紹完整版.html">
+            <img src="./蛋糕照片/無花果蛋糕.jpg" alt="card img">  
+                 <h3 class="card-title">蒙布朗蛋糕 6吋</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+        <a href="#">
+           <img src="./蛋糕照片/巧克戚風.JPG" alt="card img">  
+                <h3 class="card-title">獨角獸蛋糕 6吋</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div>
+   <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/抹茶塔.jpg" alt="card img">  
+            <h3 class="card-title">花型蛋糕 6吋</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+    <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/芒果手指蛋糕.jpg" alt="card img">  
+            <h3 class="card-title">提拉米蘇蛋糕 6吋</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+</div>
+<br><br> -->
+<!-- !-- 小蛋糕    小蛋糕    小蛋糕    小蛋糕    小蛋糕    小蛋糕    小蛋糕    -->
+    <div class="caketitle fade-in">
+        <p>小蛋糕 | Mini Cake</p>
+    </div>
+<div class="fade-in" id="cardcontainer" >
+    <div class="card">
+         <a href="#">
+            <img src="./蛋糕照片/蛋白霜檸檬塔.jpg" alt="card img">  
+                 <h3 class="card-title">蛋白霜檸檬塔</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+     <a href="#">
+        <img src="./蛋糕照片/台灣黑熊.jpg" alt="card img">  
+             <h3 class="card-title">台灣黑熊</h3>
+        <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+    </a>           
+     </div>
+     <div class="card">
+     <a href="#">
+        <img src="./蛋糕照片/提米蘇女還.jpg" alt="card img">  
+             <h3 class="card-title">提拉米蘇女孩</h3>
+        <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+    </a>           
+     </div>
+    <div class="card">
+        <a href="#">
+           <img src="./蛋糕照片/青提.jpg" alt="card img">  
+                <h3 class="card-title">乳酪白酒青提塔</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div>
+</div>
+
+<div class="fade-in" id="cardcontainer" >
+    <div class="card">
+         <a href="#">
+            <img src="./蛋糕照片/檸檬塔.jpg" alt="card img">  
+                 <h3 class="card-title">檸檬塔</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+     <a href="#">
+        <img src="./蛋糕照片/草莓塔.jpg" alt="card img">  
+             <h3 class="card-title">台灣黑熊</h3>
+        <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+    </a>           
+     </div>
+     <div class="card">
+     <a href="#">
+        <img src="./蛋糕照片/草莓慕斯.jpg" alt="card img">  
+             <h3 class="card-title">提拉米蘇女孩</h3>
+        <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+    </a>           
+     </div>
+    <!-- <div class="card">
+        <a href="#">
+           <img src="./蛋糕照片/青提.jpg" alt="card img">  
+                <h3 class="card-title">乳酪白酒青提塔</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div> -->
+</div>
+
+
+
+
+<!-- 糖果餅乾   糖果餅乾   糖果餅乾   糖果餅乾   糖果餅乾   糖果餅乾   -->
+    <!-- <div class="caketitle fade-in">
+        <p>糖果餅乾 | Cookie and Candy</p>
+    </div>    
+<div class=" fade-in" id="cardcontainer">
+    <div class="card">
+         <a href="#">
+            <img src="./蛋糕照片/南瓜.jpg" alt="card img">  
+                 <h3 class="card-title">南瓜糖霜餅乾</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+        <a href="#">
+           <img src="./蛋糕照片/豬肉.jpg" alt="card img">  
+           <h3 class="card-title">豬肉片造型巧克力</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div>
+   <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/聖誕樹.jpg" alt="card img">      
+         <h3 class="card-title">聖誕樹糖霜餅乾</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+    <div class="card">
+    <a href="#">
+       <img src="./蛋糕照片/大便.jpg" alt="card img">  
+            <h3 class="card-title">大便造型巧克力</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+</div> --> 
+
+<!--FOOTER--FOOTER--FOOTER--FOOTER-->
+<footer class="footer fade-in">
+    <div class="section">
+        <ul>            
+            <li><a href="#">關於我們</a></li>
+            <li><a href="#">媒體報導</a></li>
+            <li><a href="#">工作機會</a></li>
+            <li><a href="#">合作夥伴</a></li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>            
+            <li><a href="#">客戶服務</a></li>
+            <li><a href="#">購物須知</a></li>
+            <li><a href="#">使用條款</a></li>
+            <li><a href="#">隱私政策</a></li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>
+            <li class="li-title">DESSERT LAB</li>
+            <li>
+                <img src="./icon/地圖.svg" width="15px">
+                &nbsp;台中市西屯區123號
+            </li>
+            <li>
+                <img src="./icon/phone.svg" width="15px">
+                &nbsp;04-1234567
+            </li>
+            <li>
+                <img src="./icon/clock.svg" width="15px">
+                &nbsp;08:00 - 21:00
+            </li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>
+            <li>
+                <a href="https://www.facebook.com/?locale=zh_TW">
+                  <img src="./icon/facebook.png" style="width: 25px;" class="pic">
+                </a>
+                <a href="https://access.line.me/oauth2/v2.1/login?returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fscope%3Dopenid%2Bprofile%2Bfriends%2Bgroups%2Btimeline.post%2Bmessage.write%26response_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Fsocial-plugins.line.me%252Fwidget%252FloginCallback%253FreturnUrl%253Dhttps%25253A%25252F%25252Fsocial-plugins.line.me%25252Fwidget%25252Fclose%26state%3D9fec98665820574ebc349f47d089a6%26client_id%3D1446101138&loginChannelId=1446101138#/">
+                  <img src="./icon/line.png" style="width: 25px;">
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/accounts/login/?next=%2Fcr8on%2Ffeed%2F&source=profile_feed_tab&locale=zh_tw">
+                  <img src="./icon/instagram.png" style="width: 25px;">
+                </a>
+                <a href="mailto:123@gmail.com" >
+                  <img src="./icon/email.png" style="width: 25px; height: 25px;">
+                </a>
+            </li>  
+        </ul>
+    </div>
+</footer>
+<br>
+<footer class="footer2">
+    <p>&copy; 2024 DESSERT LAB Inc.</p>
+</footer>
+<!-- js -->
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.carousel-image');
+    const totalSlides = slides.length;
+    const indicatorContainer = document.querySelector('.carousel-indicator');
+            // 對話框   對話框   對話框   對話框   對話框   對話框   
+            function openDialog() {
+            document.getElementById('dialog').style.display = 'block';
+            document.getElementById('overlay').style.display = 'block';
+        }
+
+        function closeDialog() {
+            document.getElementById('dialog').style.display = 'none';
+            document.getElementById('overlay').style.display = 'none';
+        }
+
+        function sendMessage() {
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            alert("我們將在兩天內回覆您，謝謝");
+            closeDialog();
+        }
+    // 創建指示器點
+    function createIndicators() {
+        slides.forEach((_, i) => {
+            const dot = document.createElement('div');
+            dot.className = 'indicator-dot';
+            dot.addEventListener('click', () => goToSlide(i));
+            indicatorContainer.appendChild(dot);
+        });
+    }
+
+    function showSlide(index) {
+        slides.forEach((slide, i) => {
+            slide.classList.toggle('active', i === index);
+        });
+        document.querySelectorAll('.indicator-dot').forEach((dot, i) => {
+            dot.classList.toggle('active', i === index);
+        });
+        currentSlide = index;
+    }
+
+    function nextSlide() {
+        const nextIndex = (currentSlide + 1) % totalSlides;
+        showSlide(nextIndex);
+    }
+
+    function prevSlide() {
+        const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+        showSlide(prevIndex);
+    }
+
+    function goToSlide(index) {
+        showSlide(index);
+    }
+
+    // 自动播放
+    setInterval(nextSlide, 3000); // 每3秒切换到下一张图片
+
+    // 初始化指示器和幻灯片
+    createIndicators();
+    showSlide(currentSlide);
+    // 漢堡菜單
+            document.getElementById("Menu").onclick = function() {
+            document.getElementById("sideNav").style.left = "0";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        document.getElementById("closeBtn").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        document.getElementById("overlay").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+        // 淡入效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 当元素已经出现时，停止观察
+                    }
+                });
+            }, {
+                threshold: 0.1 // 元素至少有 10% 出现在视口内时触发
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+        /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    */
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        
+            // Show button when user scrolls down
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) { // Show button after scrolling 200px
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            });
+        
+            // Scroll to top when button is clicked
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+</script>
+</body>
+</html>

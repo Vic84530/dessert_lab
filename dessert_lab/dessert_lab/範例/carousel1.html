@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CSS Only Carousel</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f0f0f0;
+        }
+
+        .carousel {
+            position: relative;
+            width: 60%;
+            max-width: 600px;
+            overflow: hidden;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+        }
+
+        .carousel-images {
+            display: flex;
+            width: 300%;
+            animation: slide 9s infinite;
+        }
+
+        .carousel-image {
+            width: 100%;
+            transition: opacity 1s ease;
+        }
+
+        .carousel-indicator {
+            text-align: center;
+            padding: 10px;
+            background-color: rgba(0, 0, 0, 0.5);
+            color: #fff;
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        @keyframes slide {
+            0% { transform: translateX(0); }
+            33.33% { transform: translateX(0); }
+            44.44% { transform: translateX(-100%); }
+            77.77% { transform: translateX(-100%); }
+            88.88% { transform: translateX(-200%); }
+            100% { transform: translateX(-200%); }
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel">
+        <div class="carousel-images">
+            <img src="./小專照片/嚴選材料照片/可可A.jpg" alt="Image 1" class="carousel-image">
+            <img src="./小專照片/嚴選材料照片/麵粉4.jpg" alt="Image 2" class="carousel-image">
+            <img src="./小專照片/嚴選材料照片/奶油A.jpg" alt="Image 3" class="carousel-image">
+        </div>
+        <div class="carousel-indicator">
+            <span class="current-slide">1</span> / 3
+        </div>
+    </div>
+</body>
+</html>
+
+

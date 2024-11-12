@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Photo Gallery</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            border: 1px solid #ccc;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .main-photo {
+            width: 80%;
+            margin-bottom: 20px;
+        }
+
+        .main-photo img {
+            width: 100%;
+            height: auto;
+            border: 1px solid #ccc;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            justify-content: center;
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: auto;
+            margin: 0 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="main-photo" id="main-photo">
+            <img src="./小專照片/商品介紹/istockphoto-1440813658-612x612.jpg" alt="Main Photo" id="main-image">
+        </div>
+        <div class="thumbnail-gallery">
+            <img src="./小專照片/嚴選材料icon/嚴材icon5.jpg" alt="Thumbnail 1" class="thumbnail" onclick="changeMainPhoto('./小專照片/嚴選材料icon/嚴材icon5.jpg')">
+            <img src="./小專照片/嚴選材料icon/嚴材icon6.jpg" alt="Thumbnail 2" class="thumbnail" onclick="changeMainPhoto('./小專照片/嚴選材料icon/嚴材icon6.jpg')">
+            <img src="./小專照片/嚴選材料icon/嚴材icon7.jpg" alt="Thumbnail 3" class="thumbnail" onclick="changeMainPhoto('./小專照片/嚴選材料icon/嚴材icon7.jpg')">
+        </div>
+    </div>
+    <script>
+        function changeMainPhoto(src) {
+            document.getElementById('main-image').src = src;
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>載入動畫示範</title>
+    <style>
+        /* 基本樣式 */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden; /* 隱藏滾動條 */
+        }
+
+        /* 載入動畫樣式 */
+        .loader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999; /* 確保在所有內容上方 */
+        }
+
+        .loader .progress {
+            font-size: 24px;
+            color: #333;
+        }
+
+        .loader .bar {
+            width: 100%;
+            height: 5px;
+            background-color: #ccc;
+            margin-top: 10px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .loader .bar .progress-bar {
+            height: 100%;
+            background-color: #4caf50;
+            width: 0;
+            position: absolute;
+            top: 0;
+            left: 0;
+            transition: width 0.5s ease;
+        }
+
+        /* 拉門動畫的背景 */
+        .content-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000; /* 黑色背景 */
+            z-index: 9998; /* 確保在內容下面但在載入動畫上面 */
+            transform: scaleX(1);
+            transform-origin: center;
+            transition: transform 1s ease-in-out;
+        }
+
+        .content-overlay.slide-out {
+            transform: scaleX(0);
+        }
+
+        /* 主要內容樣式 */
+        .content {
+            display: none; /* 初始隱藏 */
+            opacity: 0;
+            transition: opacity 1s ease-in;
+        }
+
+        .content.show {
+            display: block;
+            opacity: 1;
+        }
+    </style>
+</head>
+<body>
+    <!-- 載入動畫 -->
+    <div class="loader" id="loader">
+        <div class="progress">
+            <span id="progressText">1%</span>
+            <div class="bar">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 主要內容 -->
+    <div class="content-overlay" id="contentOverlay"></div>
+    <div class="content" id="content">
+        <!-- 在這裡放置你的主要內容 -->
+        <h1>歡迎來到我們的網站!</h1>
+        <!-- 可以添加更多內容 -->
+    </div>
+
+    <script>
+        // 模擬載入進度
+        let progress = 0;
+        const progressText = document.getElementById('progressText');
+        const progressBar = document.getElementById('progressBar');
+        const loader = document.getElementById('loader');
+        const content = document.getElementById('content');
+        const contentOverlay = document.getElementById('contentOverlay');
+
+        function updateProgress() {
+            if (progress < 100) {
+                progress++;
+                progressText.textContent = `${progress}%`;
+                progressBar.style.width = `${progress}%`;
+                setTimeout(updateProgress, 50); // 每50毫秒更新一次
+            } else {
+                // 載入完成，顯示內容
+                loader.style.opacity = '0';
+                contentOverlay.classList.add('slide-out');
+                setTimeout(() => {
+                    loader.style.display = 'none';
+                    contentOverlay.style.display = 'none';
+                    content.classList.add('show');
+                }, 1000); // 等待動畫結束後顯示內容
+            }
+        }
+
+        // 啟動進度更新
+        updateProgress();
+    </script>
+</body>
+</html>
+

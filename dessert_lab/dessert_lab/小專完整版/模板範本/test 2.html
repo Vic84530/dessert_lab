@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>旋轉效果</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+            body {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .rotating-box {
+                width: 100px;
+                height: 100px;
+                background-color: #3498db;
+                transition: transform 0.5s;
+            }
+
+            .rotate {
+                transform: rotate(180deg);
+            }
+
+    </style>
+</head>
+<body>
+    <div class="rotating-box"></div>
+    <div onclick="rotateBox()">旋轉</div>
+
+
+    <script>
+                function rotateBox() {
+                const box = document.querySelector('.rotating-box');
+                box.classList.toggle('rotate');
+            }
+
+    </script>
+</body>
+</html>

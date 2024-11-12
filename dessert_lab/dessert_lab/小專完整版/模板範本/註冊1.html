@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>註冊會員</title>
+
+<style>
+    body {
+        background-image: linear-gradient(180deg, #292929, #6e6e6e);
+        display:flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+    }
+    div {   
+        width: 300px;
+        height: auto;     
+    }
+    h2 {
+        color: rgb(0, 0, 0);
+        opacity: 0.7;
+    }
+    input[type="submit"] {
+        background-color: #000000;
+        color: rgb(255, 255, 255);
+        padding: 10px 20px;
+        border: none;
+        cursor: pointer;
+        opacity: 0.8;
+    }
+
+    input[type="submit"]:hover {
+        background-color: #414141;
+    }
+
+    input[type="submit"]:active {
+        background-color: #878787;
+    }
+
+    input[type="text"], input[type="email"], input[type="tel"], input[type="number"], input[type="password"] {
+        width: 100%;
+        padding: 10px;
+        margin-bottom: 15px;
+        border: none;
+        border-bottom: 2px solid #a3a3a3;
+        box-sizing: border-box;
+        background-color: transparent;
+        outline: none;
+    }
+
+    input[type="text"]::placeholder, input[type="email"]::placeholder, input[type="tel"]::placeholder, input[type="number"]::placeholder, input[type="password"]::placeholder {
+        color: #bbb;
+    }
+    </style>
+
+    </head>
+    <body>
+    <div>
+        <h2>註冊</h2>
+        <br>
+        <input type="text" placeholder="請輸入您的姓名" id="name">   
+        <br><br>
+        <input type="email" placeholder="請輸入您的E-mail" id="mail">    
+        <br><br>
+        <input type="tel" placeholder="請輸入您的電話" id="phone">    
+        <br><br>
+        <input type="number" placeholder="請輸入您的生日 (YYYYMMDD)" id="birth" maxlength="8">    
+        <br><br>
+        <input type="password" placeholder="請輸入您的密碼" id="password">   
+        <br><br>
+        <input type="password" placeholder="請再輸入一次密碼" id="password-confirm">
+        <br><br>
+        <input type="checkbox" id="agree-checkbox">
+        <label for="agree-checkbox" style="color:#000000 ;">我已經閱讀並同意條款</label>
+        <a href="#" style="color:#000000 ;">隱私權聲明</a>
+        <br><br><br>
+        <form id="registration-form" action="/submit-url" method="post">
+            <input type="submit" value="註冊會員">
+        </form>
+    </div>
+<script>
+    // 註冊效果   註冊效果   註冊效果   註冊效果   註冊效果   
+document.addEventListener('DOMContentLoaded', function() {
+    var form = document.getElementById('registration-form');
+    var submitBtn = form.querySelector('input[type="submit"]');
+
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // 阻止表單提交
+
+        // 更改提交按鈕文字為「註冊中...」
+        submitBtn.value = '註冊中...';
+
+        // 模擬提交的延遲效果（這裡可以替換為實際的表單提交代碼）
+        setTimeout(function() {
+            alert('註冊成功!!'); // 示範用的提示框
+            submitBtn.value = '註冊會員'; // 恢復提交按鈕的文字
+        }, 2000); // 模擬2秒的延遲效果
+    });
+
+    // 限制生日輸入為數字且最大長度為8
+    var birthInput = document.getElementById('birth');
+    birthInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^0-9]/g, '').slice(0, 8);
+    });
+});
+</script>
+
+</body>
+</html>
+

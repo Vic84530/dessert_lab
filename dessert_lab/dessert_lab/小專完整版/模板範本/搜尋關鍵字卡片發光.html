@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>發光動畫</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .search-container {
+            margin-bottom: 20px;
+        }
+        .search-bar {
+            padding: 10px;
+            font-size: 16px;
+            width: 300px;
+        }
+        .product-card {
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            transition: box-shadow 0.3s ease-in-out;
+        }
+        .product-card.highlight {
+            animation: blink-animation 1s infinite;
+        }
+        @keyframes blink-animation {
+            0% {
+                box-shadow: 0 0 5px 0 rgba(255, 215, 0, 0.8);
+            }
+            50% {
+                box-shadow: 0 0 20px 5px rgba(255, 215, 0, 0.8);
+            }
+            100% {
+                box-shadow: 0 0 5px 0 rgba(255, 215, 0, 0.8);
+            }
+        }
+        .product-card.no-glow {
+            animation: none;
+            box-shadow: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="search-container">
+        <input type="text" id="searchInput" class="search-bar" placeholder="搜尋產品...">
+    </div>
+
+    <div class="product-card" data-name="蒙布朗蛋糕">
+        <h3>蒙布朗蛋糕</h3>
+        <p>這是一款美味的蒙布朗蛋糕。</p>
+    </div>
+    <div class="product-card" data-name="巧克力蛋糕">
+        <h3>巧克力蛋糕</h3>
+        <p>這是一款濃郁的巧克力蛋糕。</p>
+    </div>
+    <div class="product-card" data-name="草莓蛋糕">
+        <h3>草莓蛋糕</h3>
+        <p>這是一款甜美的草莓蛋糕。</p>
+    </div>
+
+    <script>
+        const searchInput = document.getElementById('searchInput');
+        const cards = document.querySelectorAll('.product-card');
+
+        function updateCards() {
+            const query = searchInput.value.toLowerCase();
+            cards.forEach(card => {
+                const name = card.getAttribute('data-name').toLowerCase();
+                if (name.includes(query)) {
+                    card.classList.add('highlight');
+                    card.classList.remove('no-glow');
+                } else {
+                    card.classList.remove('highlight');
+                    card.classList.add('no-glow');
+                }
+            });
+        }
+
+        searchInput.addEventListener('input', updateCards);
+
+        cards.forEach(card => {
+            card.addEventListener('mouseenter', () => {
+                card.classList.add('no-glow'); // 滑鼠經過時移除發光效果
+            });
+            card.addEventListener('mouseleave', () => {
+                // 當滑鼠離開時，根據搜尋結果確定是否需要添加發光效果
+                const name = card.getAttribute('data-name').toLowerCase();
+                if (searchInput.value.toLowerCase().includes(name)) {
+                    card.classList.remove('no-glow'); // 確保在搜尋條件下重新顯示發光效果
+                }
+            });
+        });
+    </script>
+</body>
+</html>
+
+
+
+
+
+

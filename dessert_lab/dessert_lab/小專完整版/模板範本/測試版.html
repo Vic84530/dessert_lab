@@ -1,0 +1,679 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>dessert</title>
+    <style>
+        /* navbar */
+        body,html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .navbar {
+            background-color: rgb(255, 255, 255);
+            display:flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: text-shadow 0.8s ease;
+            position: fixed;
+            width: 100%;
+            border: 1px solid red;
+            margin-top:-20px;
+            z-index: 1000;
+            opacity: 0.93;
+            height: 5%;
+        }
+        .navbar .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: rgb(16, 17, 18);
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            border: 1px solid peru;
+        }
+        .navbar li {
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .navbar li a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {            
+            opacity: 0.7;                   
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            width: 100px;
+            transform: translateX(-20%) translateY(0%) ;
+        }
+        .arrow-icon{
+            position: absolute;          
+        }
+        .navbar li:hover .dropdown {
+            display: block;
+        }
+        .dropdown a {
+            color: rgb(48, 32, 32);
+            padding:0px 14px 16px 14px;
+            text-decoration: none;
+            display: block;
+            
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            border: 1px solid blue;
+            width: 150px;           
+        }
+        .icons .icon {
+            margin-left: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            
+        }
+        .icons .icon:hover {
+            opacity: 0.5;
+
+        }
+        .icon-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .icon-search img {
+            width: 25px;
+            padding-bottom: 5px;
+        }
+        .search-bar {
+            display: none;
+            position:absolute;
+            top: 50%;
+            right: 10%;
+            transform: translateY(-50%) translatex(10%);
+            padding: 10px;
+            transition:all 0.5s ease;            
+        }
+        .icon-search:hover .search-bar {
+            display: flex;
+            right: calc(100% + 10px);
+        }
+        .search-bar input {
+            border: none ;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input{
+            width: 100px;
+        }
+        @media (min-width:650px) {
+            .menu {
+                display: none;       
+            }
+        }
+        @media (max-width:650px) {
+            .navbar {
+               display: flex;
+               flex-direction: row;
+            }
+            .navbar ul {
+                display: none;
+            }
+            .icons {
+                margin-left: 80px;
+                margin-right: 10px;
+                justify-content:end;
+            }
+            .search-bar input{
+                display: none;
+            }
+            .menu {
+                margin-right: 10%;
+            }
+        }
+    /* 輪播圖*/ 
+    .divimg {
+        display: flex;
+        border: 5px solid #000;
+        justify-content: center;
+        width: 100%;
+        height: 95%;
+        margin-top: 20px;
+        box-sizing: border-box;
+        padding-top: 50px;
+    }
+    .divimg img{
+        width: 90%;
+        
+    }
+    /* sec2 - card */
+    #cardcontainer {
+            display: flex;
+            width: 100%;
+            border: 1px solid #000;
+            /* background-color: #bd4747; */
+            box-sizing: border-box;
+            justify-content: center;
+            padding-top: 10%;
+        }
+         .card {
+        display: inline-block;
+        position: relative;
+        width: 280px;
+        margin:0 20px 50px;
+        overflow: hidden;
+        box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        transition: transform 0.9s ease, box-shadow 0.9s ease;
+        text-align: center;
+        background-color: rgb(255, 255, 255,0.5);
+        cursor: pointer;
+        flex: none;
+        }
+        @media (max-width:1240px){
+            #cardcontainer {
+                flex-wrap: wrap;
+            }
+            .card {
+                width:20%;
+            }
+        }
+        @media (max-width:900px){
+            #cardcontainer {
+                flex-wrap: wrap;
+            }
+            .card {
+                width:40%;
+            }
+        }
+        @media (max-width:600px){
+            
+            .card {
+                width:70%;
+            }
+        }
+        @media (max-width:375px){
+            .card {
+                width:80%;
+            }
+        }
+        .card a {
+            text-decoration: none;
+        }
+        .card img {
+            width: 100%;
+            height: auto;
+        }
+        .card-title {
+            font-size: 1em;
+            margin: 15px;
+            padding-bottom: 10%;
+            color: rgb(0, 0, 0);
+            font-weight: lighter;
+            word-wrap: break-word;    
+        }
+        .card p {
+            position: absolute;
+            bottom: 0;
+            right: 15px;
+            margin: 10px;
+            font-weight: lighter;
+            font-size: 90%;
+            color: #000;
+        }
+        .card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+      
+        .card p span {
+            display: inline-block;
+            font-size: 20px;
+            transition: transform 0.3s ease-out;
+            
+        }
+        .card:hover p span {
+            transform: translateX(20px);
+        }
+        /*  嚴選食材  嚴選食材  嚴選食材  嚴選食材  嚴選食材 */
+        body, html{
+      height: 100%;
+      margin: 0;
+      padding: 0;
+    }
+    .嚴選食材 {
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+    }
+    .嚴選食材 img {
+      width: 20%;
+    }
+    .嚴選食材 p {
+      font-size: 4vw;
+    }
+    .container {
+      height: 100%;
+      display:flex;
+      flex-direction: column;
+      justify-content: space-around;
+      align-items: center;
+      /* border: 5px solid greenyellow; */
+      box-sizing: content-box;
+      margin-bottom: 35%;
+    }
+    .container2 {
+      /* background-color: rgb(99, 103, 96); */
+      /* border: 1px solid rgb(255, 0, 0); */
+      text-align: center;
+      flex: 1;
+      font-size: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: relative;  
+      width: 100%; 
+      height: 100%;
+    }
+    :nth-of-type(1).container2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, rgb(0, 0, 0),
+       rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+    :nth-of-type(2).container2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(to right, rgb(255, 255, 255),
+       rgba(197, 38, 38, 0));
+      pointer-events: none;
+    }
+    :nth-of-type(3).container2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 70%;
+      height: 100%;
+      background: linear-gradient(to right, rgb(0, 0, 0),
+       rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+    :nth-of-type(4).container2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 80%;
+      height: 100%;
+      background: linear-gradient(to right, rgb(255, 255, 255),
+       rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+    :nth-of-type(5).container2::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(to right, rgb(0, 0, 0),
+       rgba(255, 255, 255, 0));
+      pointer-events: none;
+    }
+    .嚴材照片 {
+      width: 100%;
+      height: 100%;   
+      object-fit:fill;
+      /* fill：預設效果，元素會被拉伸填滿外層容器，長寬比會被扭曲
+contain：元素的長寬比不變，最大邊會填滿容器
+cover：元素的長寬比不變，最小邊會填滿容器，也就是元素可能會被裁切
+none：元素維持本身的大小和長寬比，不會被調整
+scale-down：元素維持本身的大小和長寬比，但如果大於容器，會被縮小適應容器 */
+    }
+    .text {
+      position: absolute; 
+      top: -20%; 
+      left: 25%;
+      transform: translate(-50%, 50%); 
+      color: rgb(255, 255, 255); 
+      font-size: 2vw;
+      text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    }
+    @media (max-width:1200px) {
+      .container {
+        height: 50%;
+        margin-bottom: 50%;
+      }
+    }
+    @media (max-width:1000px) {
+      .container {
+        height: 50%;
+        margin-bottom: 40%;
+      }
+    }
+    @media (max-width:800px) {
+      .container {
+        height: 50%;
+        margin-bottom: 30%;
+      }
+    }
+    @media (max-width:600px) {
+      .container {
+        height: 50%;
+        margin-bottom: 20%;
+      }
+    }
+    @media (max-width:400px) {
+      .container {
+        height: 30%;
+        margin-bottom: 30%;
+      }
+    }
+        /*  footer  footer  footer  footer  footer */
+        html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .footer {
+            display: flex;
+            border: 5px solid #ff00a6;
+            margin-bottom: -25px;
+            width: 100%;
+            justify-content: space-around;
+            bottom: 50px;
+
+        }
+        .section {
+            border:1px solid #000;
+            display: flex;
+            flex: 1;
+            align-items: stretch;
+            background-color: aqua;
+        }
+        .section ul {
+            display: flex;
+            list-style-type: none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 80%;
+            margin: auto;
+            padding: 0;
+        }
+        .section ul li {
+            border: 1px solid #000;
+            flex: 1 1 50%;
+            text-align: center;
+            padding: 5px;
+            font-size:13px;            
+        }
+        .li-title {
+            font-size: 19px;
+            font-weight:bolder;
+        }
+        .section ul li a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.2s ease;
+        }
+        .section ul li a:hover{
+            color: rgb(66, 66, 66);
+        }
+        .section ul li a img:hover {
+            opacity: 0.8;
+        }
+        .footer2 {
+            bottom: 0;
+            background-color: chartreuse;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+        }
+        .footer2 p {
+             margin: 0;
+        }
+        @media (max-width: 400px) {
+            .footer {
+                display:flex;
+                flex-wrap:wrap;
+                flex-direction: column;
+                width: 100%;
+                height: 50%;
+                
+             }
+             .section {
+                display: flex;
+                width: 50%;
+                padding: none;
+             }             
+             .section ul {
+                display: flex;       
+                margin:5px;
+                margin-left:15px ;
+             }
+             .section ul li {
+                        
+             }
+        }
+    </style>
+</head>
+<body>
+    <!-- navbar  navbar  navbar  navbar  navbar  -->
+    <nav class="navbar">
+        <div class="logo">LOGO</div>
+        <ul>
+            <li>
+                <!-- <a href="https://drive.google.com/drive/u/0/home">首頁</a> -->
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">商品列表</a>
+                &nbsp;<span class="arrow-icon">⌵</span>
+                <div class="dropdown">
+                    <br>
+                    <a href="#">人氣商品</a>
+                    <a href="#">奶油蛋糕</a>
+                    <a href="#">酥脆塔類</a>
+                    <a href="#">手工小物</a>
+                </div>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">線上訂購</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">關於我們</a>
+            </li>
+            <li>
+                <a href="https://drive.google.com/drive/u/0/home">常見問題</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <div class="icon-search">
+                <img src="./search.png" width="25">
+                <div class="search-bar">
+                    <input type="text" placeholder="找商品">
+                </div>
+            </div>
+            <div class="icon">
+                <a href="./登入.html">
+                    <img src="./user.png" width="20">
+                </a>
+            </div>
+            <div class="icon">
+                <img src="./message.png" width="20">
+            </div>
+            <div class="icon">
+                <img src="./shopping-cart-black-shape.png" width="25">
+            </div>            
+        </div>
+        <img class="menu" src="./菜單.jpg" width="50">
+    </nav>
+    <!-- 輪播圖 輪播圖 輪播圖 輪播圖 輪播圖 輪播圖 -->
+     <div class="divimg">
+        <img src="./black1.jpg" alt="">
+     </div>
+     <!-- sec2-card ----sec2-card ----sec2-card -->
+<div id="cardcontainer">
+    <div class="card">
+         <a href="https://www.w3schools.com/">
+            <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">  
+                 <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+            <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+        </a>           
+    </div>
+    <div class="card">
+        <a href="https://www.w3schools.com/">
+           <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">  
+                <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+           <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+       </a>           
+   </div>
+   <div class="card">
+    <a href="https://www.w3schools.com/">
+       <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">  
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+    <div class="card">
+    <a href="https://www.w3schools.com/">
+       <img src="https://inbloombakery.com/wp-content/uploads/2022/08/Cappuccino-Cake-FI.jpg" alt="card img">  
+            <h3 class="card-title">XXXXXXXXXXXXXXXXXXXXXXXXXX</h3>
+       <p>More&nbsp;&nbsp;&nbsp;<span>⟶</span></p>
+   </a>           
+    </div>
+</div>
+<!-- 嚴選食材  嚴選食材  嚴選食材  嚴選食材  嚴選食材  -->
+<div class="嚴選食材">
+    <img src="./嚴選材料icon/嚴材icon4.jpg">
+    <p>嚴選食材</p>
+    </div>
+    <div class="container">
+      <div class="container2">
+        <img class="嚴材照片" src="./嚴選材料照片/糖2000.png" >
+        <p class="text">三溫糖融合白砂糖<br>紅糖、黑糖，經三次加熱<br>焦糖香濃，風味層次豐富
+        </p>
+      </div>
+      <div class="container2">
+        <img class="嚴材照片" src="./嚴選材料照片/牛奶2000.png" >
+        <p class="text" style="color: #000;">中澤鮮奶油來自優質乳牛<br>不含人工添加物，自然純粹<br>質地細膩柔滑，奶香濃郁。打發後如雪花般化口
+        </p>
+      </div>
+      <div class="container2">
+        <img  class="嚴材照片" src="./嚴選材料照片/可可AA2000.png" >
+        <p class="text">法芙娜巧克力 選用優質可可豆<br>具有濃郁的口感。擁有卓越的風味和香氣<br>讓每一口都充滿絕妙的巧克力體驗
+        </p>
+        </div>
+        <div class="container2">
+          <img class="嚴材照片" src="./嚴選材料照片/麵粉A2000.png" >
+          <p class="text" style="color: black;">
+            日清低筋麵粉選用優質小麥<br>經過多次篩選、加工和精製而成<br>粉質細膩和無雜質的純淨度非常適合做蛋糕
+          </p>
+        </div>
+      <div class="container2">
+        <img class="嚴材照片" src="./嚴選材料照片/奶油AA2000.png" >
+        <p class="text">Echiré艾許發酵奶油<br>歷時15小時的天然發酵及熟成，透著金黃色澤<br>味道飽滿柔緻、奶味香濃，質地輕盈柔軟，入口即化
+        </p>
+      </div>
+    </div>
+<!--FOOTER--FOOTER--FOOTER--FOOTER-->
+<footer class="footer">
+    <div class="section">
+        <ul>
+            <li class="li-title">關於我們</li>
+            <li><a href="#">媒體報導</a></li>
+            <li><a href="#">工作機會</a></li>
+            <li><a href="#">合作夥伴</a></li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>
+            <li class="li-title">客戶服務</li>
+            <li><a href="#">購物須知</a></li>
+            <li><a href="#">使用條款</a></li>
+            <li><a href="#">隱私政策</a></li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>
+            <li class="li-title">LOGO</li>
+            <li>
+                <img src="./地圖.svg" width="15px">
+                &nbsp;台中市西屯區123號
+            </li>
+            <li>
+                <img src="./phone.svg" width="15px">
+                &nbsp;04-1234567
+            </li>
+            <li>
+                <img src="./clock.svg" width="15px">
+                &nbsp;08:00 - 21:00
+            </li>
+        </ul>
+    </div>
+    <div class="section">
+        <ul>
+            <li>
+                <a href="https://www.facebook.com/?locale=zh_TW">
+                  <img src="./facebook.png" style="width: 25px;" class="pic">
+                </a>
+            </li>
+             <li>
+                <a href="https://www.instagram.com/accounts/login/?next=%2Fcr8on%2Ffeed%2F&source=profile_feed_tab&locale=zh_tw">
+                  <img src="./instagram.png" style="width: 29px;">
+                </a>
+            </li>
+            <li>
+                <a href="https://access.line.me/oauth2/v2.1/login?returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fscope%3Dopenid%2Bprofile%2Bfriends%2Bgroups%2Btimeline.post%2Bmessage.write%26response_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Fsocial-plugins.line.me%252Fwidget%252FloginCallback%253FreturnUrl%253Dhttps%25253A%25252F%25252Fsocial-plugins.line.me%25252Fwidget%25252Fclose%26state%3D9fec98665820574ebc349f47d089a6%26client_id%3D1446101138&loginChannelId=1446101138#/">
+                  <img src="./line.png" style="width: 25px;">
+                </a>
+            </li>
+            <li>
+                <a href="mailto:123@gmail.com" >
+                  <img src="./email.png" style="width: 25px;">
+                </a>
+            </li>  
+        </ul>
+    </div>
+</footer>
+<br>
+<footer class="footer2">
+    <p>&copy; 2024 XXXXX. 版權所有。</p>
+</footer>
+</body>
+</html>

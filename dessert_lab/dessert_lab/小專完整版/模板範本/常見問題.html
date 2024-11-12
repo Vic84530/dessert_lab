@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+            body {
+                 font-family: Arial, sans-serif;
+            }
+
+            .container {
+                padding: 1rem;
+            }
+
+            .drop {
+                position: relative;
+                display: block;
+                width: 50%;
+                margin: 0 0 10px;
+            
+            }
+
+            .dropOption {
+                /* position: relative; */
+                width: auto;
+                color: #666;
+                font-size: 20px;
+                background-color: #fff;
+                padding: 10px;
+                /* border: 1px solid #888; */
+                /* border-radius: 5px; */
+                cursor: pointer;
+                display: flex;
+                justify-content:space-between;
+               
+            }
+            
+            .dropOption span img {  /* 圓形十字 */
+                width:25px;
+                transition: transform 0.8s;
+            }
+            .dropOption span:nth-of-type(2) { 
+
+                margin-top: 3px;
+            }
+            .rotating-box {
+                transition: transform 0.3s ease;
+            }
+            .rotate {
+                transform: rotate(225deg);
+            }
+            .dropdown {
+                width: 100%;
+                background-color: #ffffff;
+                box-shadow: 0px 2px 3px 0px #ccc;
+                list-style: none;
+                padding: 0;
+                margin: 0;
+                transition: max-height 0.8s ease-out;
+                max-height: 0;
+                overflow: hidden;
+                box-sizing: border-box;
+            }
+            .dropdown.show {
+                max-height: 200px; /* 根據需要設置合適的高度 */
+            }
+            .dropdown li {
+                display: block;
+                color: #000;
+                padding: 12px;
+                font-size: 20px;
+                cursor: pointer;
+            }
+            
+    </style>
+</head>
+<body>
+<div class="dropcontainer">
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>蛋糕可以保存多久?</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>冷凍7天，冷藏2天</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>有提供無糖或低糖的甜點？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們有一些無糖或低糖選擇。您可以詢問我們的服務員，他們會告訴您具體有哪些可供選擇的甜點。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>可以預訂定客製的蛋糕嗎？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們接受定制蛋糕的訂單，請提前至少一周預訂。您可以告訴我們您的要求和設計，我們會根據您的需求製作蛋糕。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>有提供素食或純素甜點？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們有一些素食和純素的甜點選擇。請向我們的服務人員詢問，看看今天有哪些符合這些要求的甜點。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>訂購大批量的訂單，有沒有折扣？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們對大批量訂單提供折扣。具體的折扣政策會根據訂單量和甜點種類而異，請與我們的客服或訂單部門聯繫，以便我們能夠提供更詳細的資訊。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>甜點會添加防腐劑嗎？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們盡量避免使用防腐劑，選擇新鮮的食材製作甜點。如果您對某種添加劑有疑慮，請詢問我們的服務人員，我們會提供詳細的成分信息。</li>
+            </ul>
+        </div>
+    </div>
+    <div class="container">
+        <div class="drop">
+            <div class="dropOption" onclick="toggleDropdown(event)">
+                <span>有提供信用卡或電子支付嗎？</span>
+                <span>
+                    <img class="rotating-box" src="./icon/add_circle_plus_.png">
+                </span>
+            </div>
+            <ul class="dropdown">
+                <li>我們接受各種信用卡和電子支付方式，包括[具體的支付方式]。請根據您的需求選擇合適的支付方式。</li>
+            </ul>
+        </div>
+    </div>
+</div>
+    <script>
+  function toggleDropdown(event) {
+            event.stopPropagation(); // 防止事件冒泡
+
+            const dropOption = event.currentTarget;
+            const dropdown = dropOption.nextElementSibling; // 獲取下拉選單
+
+            // 隱藏其他下拉選單
+            document.querySelectorAll('.dropdown').forEach(d => {
+                if (d !== dropdown) {
+                    d.classList.remove('show');
+                }
+            });
+
+            // 切換顯示狀態
+            dropdown.classList.toggle('show');
+
+            // 控制旋轉效果
+            const box = dropOption.querySelector('.rotating-box');
+            box.classList.toggle('rotate');
+        }
+
+        // Optional: Close dropdown when clicking outside
+        document.addEventListener('click', function(event) {
+            if (!event.target.closest('.drop')) {
+                document.querySelectorAll('.dropdown').forEach(d => d.classList.remove('show'));
+                document.querySelectorAll('.rotating-box').forEach(box => box.classList.remove('rotate'));
+            }
+        });
+    </script>
+</body>
+</html>

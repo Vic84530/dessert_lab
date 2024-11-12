@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Responsive Carousel</title>
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+        .carousel {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            width: 100%;
+            height: 700px;
+            margin-top: 20px;
+            box-sizing: border-box;
+        }
+        .carousel-images {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+        .carousel-image {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0;
+            transition: opacity 1s ease;
+        }
+        .carousel-image.active {
+            opacity: 1;
+        }
+        .carousel-indicator {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+        .indicator-dot {
+            width: 50px;
+            height: 5px;
+            background-color: #bbb;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .indicator-dot.active {
+            background-color: #333;
+        }
+        button.prev, button.next {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: rgba(0, 0, 0, 0.5);
+            border: none;
+            color: white;
+            padding: 10px;
+            cursor: pointer;
+            opacity: 0.5;
+        }
+        button.prev {
+            left: 10px;
+        }
+        button.next {
+            right: 10px;
+        }
+        button.prev:hover, button.next:hover {
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+        @media (max-width:1240px){
+            .carousel {
+                height: 600px;
+                width: 100%;
+            }
+            .indicator-dot {
+                width: 50px;
+            }
+        }
+        @media (max-width:900px){
+            .carousel {
+                height: 500px;
+                width: 100%;
+            }
+            .indicator-dot {
+                width: 40px;
+            }
+        }
+        @media (max-width:600px){
+            .carousel {
+                height: 400px;
+                width: 100%;
+            }
+            .indicator-dot {
+                width: 30px;
+            }
+        }
+        @media (max-width:375px){
+            .carousel {
+                height: 300px;
+                width: 100%;
+            }
+            .indicator-dot {
+                width: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="carousel">
+        <div class="carousel-images">
+            <img src="../小專照片/carousel pic/caro pic高清/custom text.png" class="carousel-image active">
+            <img src="../小專照片/carousel pic/caro pic高清/handmade  text.png" alt="Image 2" class="carousel-image">
+            <img src="../小專照片/carousel pic/caro pic高清/envir text.png" alt="Image 3" class="carousel-image">
+            <img src="../小專照片/carousel pic/caro pic高清/material  text.png" alt="Image 4" class="carousel-image">
+        </div>
+        <div class="carousel-indicator">
+            <!-- 指示器將通過 JavaScript 動態生成 -->
+        </div>
+        <button class="prev" onclick="prevSlide()">&#10094;</button>
+        <button class="next" onclick="nextSlide()">&#10095;</button>
+    </div>
+    <script>
+        let currentSlide = 0;
+        const slides = document.querySelectorAll('.carousel-image');
+        const totalSlides = slides.length;
+        const indicatorContainer = document.querySelector('.carousel-indicator');
+    
+        // 創建指示器點
+        function createIndicators() {
+            slides.forEach((_, i) => {
+                const dot = document.createElement('div');
+                dot.className = 'indicator-dot';
+                dot.addEventListener('click', () => goToSlide(i));
+                indicatorContainer.appendChild(dot);
+            });
+        }
+    
+        function showSlide(index) {
+            slides.forEach((slide, i) => {
+                slide.classList.toggle('active', i === index);
+            });
+            document.querySelectorAll('.indicator-dot').forEach((dot, i) => {
+                dot.classList.toggle('active', i === index);
+            });
+            currentSlide = index;
+        }
+    
+        function nextSlide() {
+            const nextIndex = (currentSlide + 1) % totalSlides;
+            showSlide(nextIndex);
+        }
+    
+        function prevSlide() {
+            const prevIndex = (currentSlide - 1 + totalSlides) % totalSlides;
+            showSlide(prevIndex);
+        }
+    
+        function goToSlide(index) {
+            showSlide(index);
+        }
+    
+        // 自动播放
+        setInterval(nextSlide, 3000); // 每3秒切换到下一张图片
+    
+        // 初始化指示器和幻灯片
+        createIndicators();
+        showSlide(currentSlide);
+    </script>
+</body>
+</html>

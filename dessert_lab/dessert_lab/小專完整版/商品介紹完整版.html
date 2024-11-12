@@ -1,0 +1,1097 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>商品介紹</title>
+    <style>
+        /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    */
+        /* body {
+            box-sizing: border-box;
+        } */
+        .scroll-to-top {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            opacity: 0;
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            transform: scale(0.9);
+            z-index: 1;
+        }
+
+        .scroll-to-top.show {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .scroll-to-top:hover {
+            background-color: #0056b3;
+        }
+        body {
+            font-family: Arial, sans-serif;
+        }
+        /* navbar   navbar   navbar   navbar   */
+        .navbar {
+            background-color: rgb(255, 255, 255);
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            padding: 10px 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            transition: text-shadow 0.8s ease;
+            position: fixed;
+            width: 100%;
+            /* border: 1px solid red; */
+            top:0;
+            z-index: 1;
+            height: 60px;
+        }
+        .logo img{
+            width: 60px;
+            height: 60px;
+            margin-top: 5px;
+        }
+        .navbar ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+            /* border: 1px solid peru; */
+        }
+        .navbar li {
+            margin: 0 15px;
+            position: relative;
+        }
+        
+        .navbar li a {
+            color: rgb(0, 0, 0);
+            text-align: center;
+            text-decoration: none;
+        }
+
+        .navbar li a:hover {            
+            opacity: 0.7;                   
+        }
+        .dropdown {
+            display: none;
+            position: absolute;
+            background-color: rgb(255, 255, 255);
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+            width: 100px;
+            transform: translateX(-20%) translateY(0%) ;
+        }
+        .arrow-icon {
+            position: absolute;          
+        }
+        .navbar li:hover .dropdown {
+            display: block;
+        }
+        .dropdown a {
+            color: rgb(48, 32, 32);
+            padding: 0px 14px 16px 14px;
+            text-decoration: none;
+            display: block;
+        }
+        .icons {
+            display: flex;
+            align-items: center;
+            transition: opacity 0.3s ease;
+            /* border: 1px solid blue; */
+            width: 150px;
+                       
+        }
+        .icons .icon {
+            margin-left: 10px;
+            font-size: 15px;
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+            display: inline-block;
+        }
+        #cart-count {
+            position: absolute;
+            top: -8px;  /* 調整數字的垂直位置 */
+            right: -12px; /* 調整數字的水平位置 */
+            background-color: rgb(255, 0, 0); /* 設置背景色為紅色 */
+            color: white; /* 設置字體顏色為白色 */
+            border-radius: 50%; /* 使背景色圓形 */
+            padding: 2px 6px; /* 調整數字的內邊距 */
+            font-size: 10px; /* 調整數字的字體大小 */
+            display: none;
+        }
+        .icons .icon:hover {
+            opacity: 0.5;
+        }
+        .icon-search {
+            display: flex;
+            align-items: center;
+            position: relative;
+            cursor: pointer;
+        }
+        .icon-search img {
+            width: 25px;
+            padding-bottom: 5px;
+        }
+        .search-bar {
+            position: absolute;
+            top: 50%;
+            right: 10%; /* 初始位置 */
+            transform: translateY(-50%) translateX(-5%); /* 初始时在视口之外 */
+            padding: 10px;
+            opacity: 0; /* 初始透明 */
+            transition: transform 0.5s ease, opacity 0.5s ease; /* 平滑过渡 */
+        }
+
+        .icon-search:hover .search-bar {
+            transform: translateY(-50%) translateX(-20%); /* 滑动到视口中 */
+            opacity: 1; /* 使其可见 */
+        }
+
+        .search-bar.hide {
+            transform: translateY(-50%) translateX(-100%); /* 从视口中滑出到左边 */
+        }
+        .search-bar input {
+            border: none;
+            border-bottom: 1px solid #000;
+            padding: 5px;
+            outline: none;
+        }
+        .search-bar input {
+            width: 100px;
+        }
+        
+        .menu {
+            font-size: 30px;
+            cursor: pointer;
+            z-index: 5;
+        }
+
+        .side-nav {
+            height: 100%;
+            width: 250px; /* 固定寬度 */
+            position: fixed;
+            top: 0;
+            left: -250px; /* 初始位置在視窗外 */
+            background-color: #ffffff;
+            overflow-x: hidden;
+            transition: 0.5s;
+            padding-top: 60px;
+            z-index: 3;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+        }
+
+        .side-nav a {
+            padding: 8px 8px 8px 32px;
+            text-decoration: none;
+            font-size: 20px;
+            color: #000000;
+            display: block;
+            transition: 0.3s;
+            cursor: pointer;
+        }
+
+        .side-nav a:hover {
+            color: #f1f1f1;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 25px;
+            font-size: 36px;
+            margin-left: 50px;
+        }
+
+        .side-nav a.close-btn {
+            padding: 0;
+            margin: 0;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+        }
+
+        .content {
+            padding: 20px;
+        }
+        @media (min-width: 650px) {
+            .menu {
+                display: none;       
+            }
+        }
+        @media (max-width: 650px) {
+            .navbar {
+               display: flex;
+               flex-direction: row;
+            }
+            .navbar ul {
+                display: none;
+            }
+            .icons {
+                margin-left: 80px;
+                margin-right: 10px;
+                justify-content: end;
+            }
+            .search-bar input {
+                display: none;
+            }
+            .menu {
+                margin-right: 10%;
+            }
+            .side-nav {
+                width: 150px;
+            }
+            .side-nav a {
+                font-size: 15px;
+                cursor: pointer;
+            }
+        }
+        /* 功能  功能  功能  功能  功能  功能  功能  */
+        .container {
+            /* border: 1px solid #004e00; */
+            width: 80%;
+            height: 600px; /* Increased height to accommodate the thumbnails */
+            margin: 60px auto;
+            margin-top: 100px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
+            box-sizing: border-box;
+        }
+        
+        .mainphoto {
+            object-fit:contain;
+        }
+        .cake, .select {
+            /* border: 1px solid #d0d000; */
+            width: 400px;
+            height: 90%;
+            margin: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 50px;
+        }
+        .cake img {
+            max-width: 100%;
+            height: 100%;
+        }
+
+        .thumbnail-gallery {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px; /* Added margin-top for spacing */
+        }
+
+        .thumbnail {
+            width: 100px;
+            height: auto;
+            margin: 0 10px;
+            cursor: pointer;
+            border: 1px solid #ccc;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .thumbnail:hover {
+            transform: scale(1.1);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .select p {
+            margin: 0 0 10px;
+            text-align: center;
+            font-size: 30px;
+        }
+
+        .dropdown2 {
+            width: 100%;
+            text-align: center;
+        }
+
+        .dropdown2 p {
+            /* margin: 10px 0; */
+            font-size: 20px;
+        }
+
+        .dropdown2 select {
+            width: 80%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .dropdown2 input[type="number"] {
+            width: 30%;
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            font-size: 16px;
+        }
+
+        .cakesize {
+            /* margin: auto; */
+            padding: 30px;
+        }
+        .cakemany {
+            padding-bottom: 20px;
+        }
+        .actions {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            margin-top: 30px;
+        }
+
+        .actions button {
+            padding: 10px 20px;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 20px;
+            border-radius: 4px;
+            text-wrap: nowrap;
+        }
+
+        .actions :nth-of-type(1) {
+            background-color: #ff0000;
+        }
+
+        .actions :nth-of-type(1):hover {
+            background-color: #ff0000c9;
+        }
+
+        .actions :nth-of-type(2) {
+            background-color: #0051ff;
+        }
+
+        .actions :nth-of-type(2):hover {
+            background-color: #0022ffc0;
+        }
+
+
+        .p商品介紹{
+            text-align: center;
+            font-size: 24px;
+            margin-top: 10%;
+            font-weight: 600;
+        }
+        .pic4div {
+            width: 100vw;
+            display: flex;
+            justify-content:space-around;
+            align-items: center;
+            /* border: 2px solid #ff0000; */
+            margin-top: 10%;
+            flex-direction:row;
+        } 
+        .pic4div img{
+            width: 85%;
+            margin:auto;
+        }
+        .pictextdiv{
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            /* border: 1px solid black; */
+            margin: 0 30px;
+        }
+        .pictextdiv p:nth-of-type(1){
+            font-size: 30px;
+            font-weight: 800;
+        }
+        .product-information {
+            width: 45%;
+            margin: 80px auto;
+            /* border: 2px solid #ff0000; */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .product-information p {
+            text-align: center;
+            font-size: 24px;
+            margin: 60px 0;
+            font-weight: 600;
+        }
+
+        .product-information img {
+            max-width: 90%;
+            margin-bottom: 20px;
+        }
+        @media (max-width: 1200px) {
+            /* .container {
+                display: flex;
+                flex-direction: column;
+            }            */
+            /* .cake {
+                width: 90%;
+                margin-top: 150%;
+            } */
+            /* .product-information {
+                margin-top: 10%;
+                width: 90%;
+            } */
+            .pic4div{
+                margin-top: 10%;
+                display:flex;
+                flex-wrap: wrap;
+            }
+            .pictextdiv{
+                width: 45%;
+                margin-top: 10%;
+            }
+        }
+        @media (max-width: 900px) {
+            .container {
+                display: flex;
+                flex-direction: column;
+            }           
+            .cake {
+                width: 90%;
+                margin-top: 150%;
+            }
+            .select {
+                height: 110%;
+                width: 90%;
+                margin-top: 20%;
+            }
+            .product-information {
+                margin-top: 10%;
+                width: 90%;
+            }
+            .p商品介紹 {
+                margin-top: 120%;
+            }
+            .pic4div{
+                margin-top: 10%;
+                display:flex;
+                flex-wrap: wrap;
+            }
+            .pictextdiv{
+                width: 45%;
+                margin-top: 10%;
+            }
+        }
+        @media (max-width: 700px) {
+            .p商品介紹 {
+                margin-top: 120%;
+            }
+        }
+        @media (max-width: 550px) {
+            .cake {
+                width: 90%;
+                margin-top: 180%;
+            }
+            .p商品介紹 {
+                margin-top: 150%;
+            }
+            .pictextdiv p:nth-of-type(1){
+            font-size: 23px;
+            }
+            .pic4div{
+                margin-top: 10%;
+                display:flex;
+                flex-wrap: wrap;
+            }
+            .pictextdiv{
+                width: 80%;
+                margin-top: 20%;
+            }
+        }
+        @media (max-width: 400px) {
+            .cake {
+                width: 100%;
+                margin-top: 200%;
+            }
+            .select {
+                height: 110%;
+                width: 100%;
+                margin-top: 10%;
+            }
+            .dropdown2 select {
+                width: 80%;
+            }
+            .product-information {
+                margin-top: 20%;
+                width: 90%;
+            }
+            .p商品介紹 {
+                margin-top: 150%;
+            }
+            .pictextdiv p:nth-of-type(1){
+            font-size: 20px;
+            }
+        }
+        /* 購物車   購物車   購物車   購物車   購物車   購物車   購物車   購物車   */
+        .cart {
+             display: none; /*初始隱藏購物車 */
+            /* border: 5px solid #ff00a6; */
+            background-color: rgb(255, 255, 255);
+            padding: 10px;
+            position: fixed; /* 固定顯示在視窗某處 */
+            right: 50px;
+            top: 100px;
+            width: 280px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.4);
+        }
+        .cartdiv{
+            display: flex;
+            border-bottom: 1px solid black;
+            justify-content:space-between;            
+        }
+        
+        .cartcakepic img {
+            max-width: 120px;
+            height: 120px;
+        }
+        .cartnameprice{
+            /* margin: auto; */
+            /* border: 1px solid rgb(94, 0, 0); */
+            width: 50%;
+            /* padding: 10px; */
+            display: flex;
+            flex-direction: column;
+            align-content: space-between;
+        }
+        
+        .cartitemname {
+            /* background-color: red; */
+            position: relative;
+            bottom: 20px;
+            font-size: 20px;    
+            font-weight: 500;     
+        }
+        .cartpricedel{
+            display:flex;
+            flex-direction: row;
+            justify-content:space-between;
+            /* border: 1px solid blue; */
+            padding:5px;
+            margin-top: 30px;
+        }
+        .cartpricedel p {
+            margin: 0;
+        }
+        #cart-item-quantity{
+            font-size: 15px;
+        }
+        .remove-item-button {
+            color: rgb(0, 0, 0);
+            cursor: pointer;
+            margin: 0;
+            height: 20px;
+        }
+        .cartcheckoutdiv{
+            display: flex;
+            align-content: center;
+            justify-content: center;
+        }
+        .cartcheckout{
+            background-color: #fff;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 100px;
+            height: 30px;
+            /* margin: 20px 70px; */
+            margin-top: 20px;
+            font-size: 15px;    
+            font-weight: 500;         
+        }
+
+        .cartcheckout p {
+            padding-bottom: 2px;
+        }
+        
+
+            /* footer    footer    footer    footer    footer   */
+
+        html,body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+        .footer {
+            display: flex;
+            /* border: 5px solid #ff00a6; */
+            margin-bottom: -1.2rem;
+            width: 100%;
+            justify-content: space-around;
+            bottom: 50px;
+            background-color: #9c9c9c77;
+            height: 120px;
+        }
+        .section {
+            /* border:1px solid #000; */
+            display: flex;
+            flex: 1;
+            align-items: stretch;
+            /* background-color: aqua; */
+        }
+        .section ul {
+            display: flex;
+            list-style-type: none;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            width: 100%;
+            margin: auto;
+            padding: 0;
+        }
+        .section ul li {
+            /* border: 1px solid #000; */
+            flex: 1 1 50%;
+            text-align: center;
+            padding: 5px;
+            font-size:13px;            
+        }
+        .li-title {
+            font-size: 19px;
+            font-weight:bolder;
+        }
+        .section ul li a {
+            color: #000;
+            text-decoration: none;
+            transition: color 0.2s ease;
+            font-weight: 800;
+        }
+        .section ul li a:hover{
+            color: rgb(66, 66, 66);
+        }
+        .section ul li a img:hover {
+            opacity: 0.8;
+        }
+        .footer2 {
+            bottom: 0;
+            background-color: rgb(94, 94, 94);
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            height: 50px;
+            justify-content: center;
+            align-items: center;
+            /* border-top: 1px solid black; */
+        }
+        /*  */
+        .footer div:nth-of-type(4) ul li {
+            margin-top: 15px;
+        }
+        .footer div:nth-of-type(4) ul li img{
+            margin:0px 15px;
+        }
+        /*  */
+        .footer2 p {
+            margin: 0;
+            color: #000000;
+            font-size: 15px;
+        }
+        @media (max-width: 600px) {
+            .footer {
+                display:flex;
+                flex-wrap:wrap;
+                flex-direction: column;
+                width: 100%;
+                height: 250px;
+             }
+             .section {
+                display: flex;
+                width: 50%;
+                padding: none;
+             }             
+             .section ul {
+                display: flex;       
+                margin:5px;
+                /* margin-left:15px; */
+             }
+             .section ul li {
+                font-size: 13px;
+                margin: -2px;
+                font-weight: 500;
+             }
+             :nth-of-type(4).section {
+                display: flex;
+                flex-direction: column;
+                height: 50%;
+             }
+             :nth-of-type(4).section ul li{
+                padding: -1px;               
+             }
+             .footer2 p{
+                margin: 0;
+                color: #000000;
+                font-size: 15px;
+             }
+        }
+                        /* 淡入CSS */
+            .fade-in {
+            opacity: 0; /* 初始透明 */
+            transition: opacity 1s ease-in-out; /* 淡入效果 */
+        }
+
+            .fade-in.visible {
+            opacity: 1; /* 淡入完成 */
+        }
+    </style>
+</head>
+<body>
+    <!-- /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    */ -->
+    <button id="scrollToTopBtn" class="scroll-to-top">Top</button>
+
+    <!-- navbar  navbar  navbar  navbar  navbar  -->
+    <nav class="navbar">
+        <div class="logo">
+            <a href="./首頁完整版.html">
+                <img src="./蛋糕照片/Cake Logo -.png" alt="">
+            </a>
+        </div>
+        <ul>
+            <li>
+                <!-- <a href="https://drive.google.com/drive/u/0/home">首頁</a> -->
+            </li>
+            <li>
+                <a href="#">商品列表</a>
+                &nbsp;<span class="arrow-icon">⌵</span>
+                <div class="dropdown">
+                    <br>
+                    <a href="./product_cream_cake.html">奶油蛋糕</a>
+                    <a href="#">小型蛋糕</a>
+                    <a href="#">糖果餅乾</a>
+                </div>
+            </li>
+            <li>
+                <a href="#">線上訂購</a>
+            </li>
+            <li>
+                <a href="#">關於我們</a>
+            </li>
+            <li>
+                <a href="./常見問題完整版.html">常見問題</a>
+            </li>
+        </ul>
+        <div class="icons">
+            <div class="icon-search">
+                <img src="./icon/search.png" width="25">
+                <div class="search-bar">
+                    <input type="text" placeholder="找商品">
+                </div>
+            </div>
+            <div class="icon">
+                <a href="./登入完整版.html">
+                    <img src="./icon/user.png" width="20">
+                </a>
+            </div>
+            <div class="icon">
+                <img src="./icon/message.png" width="20">
+            </div>
+            <div class="icon">
+                <img src="./icon/shopping-cart-black-shape.png" width="25" alt="購物車">
+                <span id="cart-count">0</span> <!-- 顯示購物車數量的元素 -->
+            </div>           
+        </div>
+        <img class="menu" id="Menu" src="./icon/menu.png" width="25">
+    </nav>
+    
+    <div class="side-nav" id="sideNav">
+        <a href="javascript:void(0)" class="close-btn" id="closeBtn">&times;</a>
+        <a href="./奶油蛋糕.html">奶油蛋糕</a>
+        <a href="#">小型蛋糕</a>
+        <a href="#">糖果餅乾</a>
+        <a href="#">線上訂購</a>
+        <a href="#">關於我們</a>
+        <a href="./常見問題完整版.html">常見問題</a>  
+        <div class="overlay" id="overlay"></div>
+    </div>
+    <!-- 功能   功能   功能   功能   功能   功能   功能   -->
+    <div class="container fade-in">
+        <div class="cake">
+            <div class="mainphoto" id="main-photo">
+                <img src="./蛋糕照片/蒙布朗.jpg" alt="Main Photo" id="main-image">
+            </div>
+            <div class="thumbnail-gallery">
+                <img src="./蛋糕照片/蒙布朗.jpg" alt="Thumbnail 1" class="thumbnail" onclick="changeMainPhoto('./蛋糕照片/蒙布朗.jpg')">
+                <img src="./蛋糕照片/蒙布朗頗面.png" alt="Thumbnail 2" class="thumbnail" onclick="changeMainPhoto('./蛋糕照片/蒙布朗頗面.png')">
+            </div>            
+        </div>
+        <div class="select fade-in">
+            <p>蒙布朗蛋糕 6吋<br>NT$ 650</p>
+            <div class="dropdown2 fade-in">
+                <div class="cakesize fade-in">
+                    <p class="fade-in">蛋糕尺寸</p>
+                    <select>
+                        <option>6吋 NT$ 650</option>
+                        <option>8吋 NT$ 1000</option>
+                        <option>18吋 NT$ 1500</option>
+                    </select>
+                </div>
+                <div class="cakemany fade-in">
+                    <p class="fade-in">數量</p>
+                    <input type="number" min="1" value="1">
+                </div>
+                <div>
+                    <p class="fade-in">加購</p>
+                    <select>
+                        <option>蠟燭</option>
+                        <option>卡片</option>
+                        <option>刀叉</option>
+                    </select>
+                </div>
+                <div class="actions fade-in">
+                    <button>立即購買</button>
+                    <button class="add-to-cart-button" id="add-to-cart-button">加入購物車</button>
+                </div>
+            </div>
+        </div>
+    </div>
+        <!--   購物車   購物車   購物車   購物車   購物車   購物車 -->
+        <div class="cart" id="cart">
+            <div class="cartdiv">
+                <div class="cartcakepic">
+                    <img src="./蛋糕照片/蒙布朗.jpg" alt="蒙布朗蛋糕">
+                </div>
+                <div class="cartnameprice">
+                    <p class="cartitemname">蒙布朗蛋糕 6吋</p>
+                    <div class="cartpricedel">
+                        <p id="cart-item-quantity">1 X NT$ 650</p>
+                        <!-- <button class="remove-item-button">刪除</button> -->
+                        <img class="remove-item-button" src="./icon/delete_.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="cartcheckoutdiv">
+                <button class="cartcheckout">
+                    <p>訂單結帳</p>
+                </button>
+            </div>
+        </div>
+
+<!-- 商品介紹    商品介紹    商品介紹    商品介紹    商品介紹    商品介紹    商品介紹   -->
+
+    <div class="p商品介紹 fade-in">
+        <p>｜商品介紹｜</p>
+    </div>
+    
+    <div class="pic4div">
+        <div class="pictextdiv fade-in">
+            <img src="./商品介紹/戚風圓.png">
+            <p>戚風蛋糕</p>
+            <p>使用經典的戚風蛋糕當作基底，搭配上低糖的配方，不失美味口感輕盈，柔軟濕潤，細膩的組織，適合各式甜點的選擇。</p>
+        </div>
+        <div class="pictextdiv fade-in">
+            <img src="./商品介紹/香草園.png">
+            <p>香草莢</p>
+            <p>使用天然進口的香草莢，獨特香味且自然香甜，提升甜點的味覺層次。濃郁香氣能與蛋糕完美結合，為甜點增添高級感和品質。</p>
+        </div>
+        <div class="pictextdiv fade-in">
+            <img src="./商品介紹/栗子圓.png">
+            <p>新鮮栗子</p>
+            <p>使用天然新鮮栗子，口感細膩綿密，帶有濃郁的栗子香氣。在蛋糕裡面搭配出獨特的口感層次，既可作內餡，也可用作裝飾。</p>
+        </div>
+        <div class="pictextdiv fade-in">
+            <img src="./商品介紹/造型圓.png">
+            <p>蛋糕造型</p>
+            <p>製作獨特的蛋糕造型，充滿創意，根據不同主題設計，滿足客人的視覺享受。具有高度的個性化和藝術性，留下深刻印象。</p>
+        </div>
+    </div>
+    <div class="product-information">
+        <p class="fade-in">｜食用建議｜</p>
+        <img class="fade-in" src="./商品介紹/食用說明高清.png" alt="Eating Instructions">
+        <img class="fade-in" src="./商品介紹/營養標示高清.png" alt="Nutritional Information">
+    </div>
+
+
+    <!-- /* footer    footer    footer    footer    footer   */ -->
+    <footer class="footer fade-in">
+        <div class="section">
+            <ul>            
+                <li><a href="#">關於我們</a></li>
+                <li><a href="#">媒體報導</a></li>
+                <li><a href="#">工作機會</a></li>
+                <li><a href="#">合作夥伴</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>            
+                <li><a href="#">客戶服務</a></li>
+                <li><a href="#">購物須知</a></li>
+                <li><a href="#">使用條款</a></li>
+                <li><a href="#">隱私政策</a></li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>
+                <li class="li-title">DESSERT LAB</li>
+                <li>
+                    <img src="./icon/地圖.svg" width="15px">
+                    &nbsp;台中市西屯區123號
+                </li>
+                <li>
+                    <img src="./icon/phone.svg" width="15px">
+                    &nbsp;04-1234567
+                </li>
+                <li>
+                    <img src="./icon/clock.svg" width="15px">
+                    &nbsp;08:00 - 21:00
+                </li>
+            </ul>
+        </div>
+        <div class="section">
+            <ul>
+                <li>
+                    <a href="https://www.facebook.com/?locale=zh_TW">
+                      <img src="./icon/facebook.png" style="width: 25px;" class="pic">
+                    </a>
+                    <a href="https://access.line.me/oauth2/v2.1/login?returnUri=%2Foauth2%2Fv2.1%2Fauthorize%2Fconsent%3Fscope%3Dopenid%2Bprofile%2Bfriends%2Bgroups%2Btimeline.post%2Bmessage.write%26response_type%3Dcode%26redirect_uri%3Dhttps%253A%252F%252Fsocial-plugins.line.me%252Fwidget%252FloginCallback%253FreturnUrl%253Dhttps%25253A%25252F%25252Fsocial-plugins.line.me%25252Fwidget%25252Fclose%26state%3D9fec98665820574ebc349f47d089a6%26client_id%3D1446101138&loginChannelId=1446101138#/">
+                      <img src="./icon/line.png" style="width: 25px;">
+                    </a>
+                </li>
+                <li>
+                    <a href="https://www.instagram.com/accounts/login/?next=%2Fcr8on%2Ffeed%2F&source=profile_feed_tab&locale=zh_tw">
+                      <img src="./icon/instagram.png" style="width: 25px;">
+                    </a>
+                    <a href="mailto:123@gmail.com" >
+                      <img src="./icon/email.png" style="width: 25px; height: 25px;">
+                    </a>
+                </li>  
+            </ul>
+        </div>
+    </footer>
+    <br>
+    <footer class="footer2">
+        <p>&copy; 2024 DESSERT LAB Inc.</p>
+    </footer>
+    <script>
+        function changeMainPhoto(src) {
+            document.getElementById('main-image').src = src;
+        }
+        // 漢堡菜單
+        document.getElementById("Menu").onclick = function() {
+            document.getElementById("sideNav").style.left = "0";
+            document.getElementById("overlay").style.display = "block";
+        }
+
+        document.getElementById("closeBtn").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+
+        document.getElementById("overlay").onclick = function() {
+            document.getElementById("sideNav").style.left = "-250px";
+            document.getElementById("overlay").style.display = "none";
+        }
+//  購物車效果   購物車效果   購物車效果   購物車效果   購物車效果   購物車效果   
+
+document.addEventListener('DOMContentLoaded', () => {
+    const addToCartButton = document.getElementById('add-to-cart-button');
+    const cart = document.getElementById('cart');
+    const removeItemButton = cart.querySelector('.remove-item-button');
+    const cartCountElement = document.getElementById('cart-count');
+    const cartItemQuantity = document.getElementById('cart-item-quantity');
+
+    let cartCount = 0;
+    let itemQuantity = 0;
+
+    // 點擊 "加入購物車" 按鈕時顯示購物車並增加數量
+    addToCartButton.addEventListener('click', () => {
+        cartCount += 1;
+        itemQuantity += 1;
+
+        cartCountElement.innerText = cartCount;
+        cartCountElement.style.display = cartCount > 0 ? 'block' : 'none'; // 顯示數字
+
+        cartItemQuantity.innerText = `${itemQuantity} X NT$ 650`; // 更新數量顯示
+
+        cart.style.display = 'block'; // 顯示購物車
+    });
+
+    // 點擊 "刪除" 按鈕時隱藏購物車並重置數量
+    removeItemButton.addEventListener('click', () => {
+        cartCount = 0;
+        itemQuantity = 0;
+
+        cartCountElement.innerText = cartCount;
+        cartCountElement.style.display = 'none'; // 隱藏數字
+
+        cartItemQuantity.innerText = `0*NT650`; // 重置數量顯示
+
+        cart.style.display = 'none'; // 隱藏購物車
+    });
+
+    // 點擊空白處也可以關閉購物車
+    document.addEventListener('click', (event) => {
+        // 如果點擊的不是購物車或其內容
+        if (!cart.contains(event.target) && !addToCartButton.contains(event.target)) {
+            cart.style.display = 'none'; // 隱藏購物車
+        }
+    });
+});
+
+
+
+
+        // 淡入效果
+        document.addEventListener('DOMContentLoaded', function() {
+            const elements = document.querySelectorAll('.fade-in');
+
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target); // 当元素已经出现时，停止观察
+                    }
+                });
+            }, {
+                threshold: 0.1 // 元素至少有 10% 出现在视口内时触发
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        });
+
+        /* 置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕     置頂按鈕    */
+        document.addEventListener('DOMContentLoaded', () => {
+            const scrollToTopBtn = document.getElementById('scrollToTopBtn');
+        
+            // Show button when user scrolls down
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 200) { // Show button after scrolling 200px
+                    scrollToTopBtn.classList.add('show');
+                } else {
+                    scrollToTopBtn.classList.remove('show');
+                }
+            });
+        
+            // Scroll to top when button is clicked
+            scrollToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+        });
+    </script>
+</body>
+</html>

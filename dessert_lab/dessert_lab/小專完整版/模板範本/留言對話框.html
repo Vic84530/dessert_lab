@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>留言對話框</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        /* 對話框   對話框   對話框   對話框   對話框   對話框   對話框   對話框   對話框   對話框   對話框    */
+        .icon {
+            font-size: 24px;
+            cursor: pointer;
+        }
+        .dialog {
+            display: none; /* Initially hide the dialog */
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, 70%);
+            width: 300px;
+            height: 200px; /* Fixed height for the dialog */
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+            padding: 20px;
+            box-sizing: border-box;
+            position: relative; /* Make sure dialog is relative for absolute positioning */
+        }
+        .dialog-header {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        .dialog-content {
+            margin-bottom: 40px; /* Space for the buttons at the bottom */
+        }
+        .dialog-input,
+        .dialog-textarea {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+        .dialog-textarea {
+            height: 100px; /* Fixed height for the textarea */
+            resize: none; /* Disable resizing */
+        }
+        .dialog-button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: #fff;
+            cursor: pointer;
+            font-size: 16px;
+            position: absolute; /* Absolute positioning for the buttons */
+            bottom: 10px;
+        }
+        .dialog-button.close {
+            background-color: #6c757d;
+            right: 120px; /* Position close button to the left */
+        }
+        .dialog-button.send {
+            right: 10px; /* Position send button to the right */
+        }
+    </style>
+</head>
+<body>
+    <div class="icon" onclick="openDialog()">📝</div>
+    <!-- 對話框   對話框   對話框   對話框   對話框   對話框   對話框   -->
+    <div class="dialog" id="dialog">
+        <div class="dialog-header">留言</div>
+        <div class="dialog-content">
+            <input type="email" id="email" class="dialog-input" placeholder="請輸入您的EMAIL">
+            <textarea id="message" class="dialog-textarea" placeholder="請輸入您的留言"></textarea>
+            <!-- Buttons positioned within the dialog -->
+            <button class="dialog-button close" onclick="closeDialog()">關閉</button>
+            <button class="dialog-button send" onclick="sendMessage()">發送</button>
+        </div>
+    </div>
+
+    <script>
+        // 對話框   對話框   對話框   對話框   對話框   對話框   
+        function openDialog() {
+            document.getElementById('dialog').style.display = 'block';
+        }
+
+        function closeDialog() {
+            document.getElementById('dialog').style.display = 'none';
+        }
+
+        function sendMessage() {
+            const email = document.getElementById('email').value;
+            const message = document.getElementById('message').value;
+            alert('EMAIL: ' + email + '\n留言: ' + message);
+            closeDialog();
+        }
+    </script>
+</body>
+</html>
+
+
+
+

@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div id="cart-icon">
+        <img src="./footer/facebook.png" alt="Shopping Cart">
+        <span id="cart-count">0</span>
+    </div>
+    
+    <button id="add-to-cart-button">加入購物車</button>
+    <script>
+        // 找到加入購物車按鈕的元素
+const addToCartButton = document.getElementById('add-to-cart-button');
+
+// 找到顯示購物車數量的元素
+const cartCountSpan = document.getElementById('cart-count');
+
+// 設置一個變數來追蹤購物車中的項目數量
+let cartCount = 0;
+
+// 綁定點擊事件處理函式到加入購物車按鈕
+addToCartButton.addEventListener('click', function() {
+    // 增加購物車中的項目數量
+    cartCount++;
+    
+    // 更新顯示的數字
+    cartCountSpan.textContent = cartCount;
+});
+
+    </script>
+</body>
+</html>
